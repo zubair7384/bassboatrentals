@@ -7,11 +7,11 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import BbrRect from '../assets/images/bbr_rect.png';
+import BbrRect from '../../assets/images/bbr_rect.png';
 import {GETSTARTED_TITLE, GUEST} from '../../strings/en';
 import {SCREEN_HEIGHT} from '../../utils/dimensions';
 
-const GetStarted = () => {
+const GetStarted = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.col}>
@@ -26,7 +26,9 @@ const GetStarted = () => {
             <TouchableOpacity style={styles.btnSignInContainer}>
               <Text style={styles.btnSignInText}>Login</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnSignUpContainer}>
+            <TouchableOpacity
+              style={styles.btnSignUpContainer}
+              onPress={() => navigation.navigate('CreateAccount')}>
               <Text style={styles.btnSignUpText}>Signup</Text>
             </TouchableOpacity>
           </View>
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+    padding: 20,
   },
   col: {flex: 1, margin: 10},
   imageContainer: {
