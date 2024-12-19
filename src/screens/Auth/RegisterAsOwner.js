@@ -7,9 +7,11 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import Header from '../../components/Header';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../utils/dimensions';
+// import DropDownPicker from 'react-native-dropdown-picker';
 
 const RegisterAsBoatOwner = () => {
   const [firstName, setFirstName] = useState('');
@@ -18,13 +20,27 @@ const RegisterAsBoatOwner = () => {
   const [password, setPassword] = useState('');
   const [referalCode, setReferalCode] = useState('');
   const [age, setAge] = useState('');
+  const [progress, setProgress] = useState(new Animated.Value(0.5));
+
+  const handleNext = () => {
+    Animated.timing(progress, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const progressWidth = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0%', '100%'],
+  });
 
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Create an account" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.progressBar}>
-          <Text style={styles.progressBarText}>Progress Bar</Text>
+        <View style={styles.progressBarContainer}>
+          <Animated.View style={[styles.progressBar, {width: progressWidth}]} />
         </View>
         <View style={styles.form}>
           <View style={styles.inputRow}>
@@ -52,7 +68,9 @@ const RegisterAsBoatOwner = () => {
           />
           <View style={styles.choseFileContainer}>
             <Text style={styles.choseFileTitle}>Profile Picture</Text>
-            <Text style={styles.choseFile}>Choose File</Text>
+            <View style={styles.choseFile}>
+              <Text style={styles.choseFileText}>Choose File</Text>
+            </View>
           </View>
           <TextInput
             placeholder="Password"
@@ -82,7 +100,7 @@ const RegisterAsBoatOwner = () => {
               placeholderTextColor={'#979797'}
             />
           </View>
-          <TouchableOpacity style={styles.btnNext}>
+          <TouchableOpacity style={styles.btnNext} onPress={handleNext}>
             <Text style={styles.btnText}>Next</Text>
           </TouchableOpacity>
         </View>
@@ -98,18 +116,22 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingHorizontal: SCREEN_WIDTH * 0.05,
-    paddingVertical: SCREEN_HEIGHT * 0.02,
+    // paddingVertical: SCREEN_HEIGHT * 0.02,
+    flexGrow: 1,
+  },
+
+  progressBarContainer: {
+    height: 10,
+    width: '100%',
+    backgroundColor: '#191919',
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginVertical: 20,
   },
   progressBar: {
-    backgroundColor: 'orange',
-    marginVertical: SCREEN_HEIGHT * 0.02,
-    height: SCREEN_HEIGHT * 0.03,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  progressBarText: {
-    color: 'white',
-    fontSize: SCREEN_HEIGHT * 0.02,
+    height: '100%',
+    backgroundColor: '#F2F2F2',
+    borderRadius: 5,
   },
   form: {
     marginBottom: SCREEN_HEIGHT * 0.05,
@@ -164,6 +186,11 @@ const styles = StyleSheet.create({
     height: 32,
     width: 97,
     borderRadius: 3,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  choseFileText: {
     color: '#979797',
     textAlign: 'center',
     fontSize: 14,
