@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import BbrRect from '../assets/images/bbr_rect.png';
-import {GETSTARTED_TITLE, GUEST} from '../strings/en';
-import {SCREEN_HEIGHT} from '../utils/dimensions';
+import {GETSTARTED_TITLE, GUEST} from '../../strings/en';
+import {SCREEN_HEIGHT} from '../../utils/dimensions';
 
 const GetStarted = () => {
   return (

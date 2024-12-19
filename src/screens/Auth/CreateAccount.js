@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Header from '../components/Header';
+import Header from '../../components/Header';
 
 const SignUpScreen = () => {
   const [selectedOption, setSelectedOption] = useState('');

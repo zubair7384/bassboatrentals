@@ -8,8 +8,8 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import Header from '../components/Header';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../utils/dimensions';
+import Header from '../../components/Header';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../utils/dimensions';
 
 const RegisterAsBoatOwner = () => {
   const [firstName, setFirstName] = useState('');
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     backgroundColor: '#191919',
-    height: SCREEN_HEIGHT * 0.07,
+    height: SCREEN_HEIGHT * 0.065,
     borderRadius: 8,
     paddingHorizontal: 10,
     marginVertical: SCREEN_HEIGHT * 0.015,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: SCREEN_WIDTH > 360 ? 'row' : 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 10,
+    gap: 15,
     width: '100%',
   },
   btnNext: {
