@@ -1,6 +1,6 @@
 import React from 'react';
-import RegisterAsBoatOwner from './src/screens/Auth/RegisterAsOwner';
+import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
-  return <RegisterAsBoatOwner />;
+  return <AppNavigator />;
 }

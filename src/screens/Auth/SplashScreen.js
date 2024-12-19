@@ -1,9 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import logo from '../assets/images/logo.png';
+import logo from '../../assets/images/logo.png';
 
-function SplashScreen() {
+function SplashScreen({navigation}) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('GetStarted');
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
   return (
     <LinearGradient
       colors={['#000000', '#1a1a1a', '#1f1f1f', '#1a1a1a', '#000000']}
