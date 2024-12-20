@@ -5,8 +5,10 @@ import SplashScreen from '../screens/Auth/SplashScreen';
 import GetStartedScreen from '../screens/Auth/GetStarted';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterAsOwner from '../screens/Auth/RegisterAsOwner';
+import RegisterOwnerDetails from '../screens/Auth/RegisterAsOwnerDetails';
 import RegisterAsRenter from '../screens/Auth/RegisterAsRenter';
 import CreateAccount from '../screens/Auth/CreateAccount';
+import OwnerHomeScreen from '../screens/Owner/OwnerHome';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +29,21 @@ const AppNavigator = () => {
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RegisterAsOwner"
+          component={RegisterAsOwner}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RegisterOwnerDetails"
+          component={RegisterOwnerDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OwnerHome"
+          component={OwnerHomeScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
