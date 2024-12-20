@@ -13,7 +13,7 @@ import Header from '../../components/Header';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../utils/dimensions';
 // import DropDownPicker from 'react-native-dropdown-picker';
 
-const RegisterAsBoatOwner = () => {
+const RegisterAsBoatOwner = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -37,7 +37,7 @@ const RegisterAsBoatOwner = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Create an account" />
+      <Header title="Register as Boat Owner" navigation={navigation} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.progressBarContainer}>
           <Animated.View style={[styles.progressBar, {width: progressWidth}]} />
@@ -100,7 +100,9 @@ const RegisterAsBoatOwner = () => {
               placeholderTextColor={'#979797'}
             />
           </View>
-          <TouchableOpacity style={styles.btnNext} onPress={handleNext}>
+          <TouchableOpacity
+            style={styles.btnNext}
+            onPress={() => navigation.navigate('RegisterOwnerDetails')}>
             <Text style={styles.btnText}>Next</Text>
           </TouchableOpacity>
         </View>

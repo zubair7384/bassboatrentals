@@ -23,7 +23,9 @@ const GetStarted = ({navigation}) => {
         </View>
         <View style={styles.guestContainer}>
           <View style={styles.btnRow}>
-            <TouchableOpacity style={styles.btnSignInContainer}>
+            <TouchableOpacity
+              style={styles.btnSignInContainer}
+              onPress={() => navigation.navigate('OwnerHome')}>
               <Text style={styles.btnSignInText}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -59,15 +61,16 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     width: '100%',
-    height: SCREEN_HEIGHT * 0.3,
-    justifyContent: 'flex-end',
+    height: SCREEN_HEIGHT * 0.35,
+    justifyContent: 'center',
     // backgroundColor: 'green',
   },
   title: {
     color: '#FFFFFF',
     fontSize: 44,
-    fontWeight: 'bold',
+    // fontWeight: '700',
     lineHeight: 50,
+    fontFamily: 'KnulTrial-Bold',
   },
   btnRow: {
     flexDirection: 'row',
@@ -88,6 +91,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: SCREEN_HEIGHT * 0.02,
     fontWeight: 'bold',
+    fontFamily: 'KnulTrial-Regular',
   },
   btnSignUpContainer: {
     backgroundColor: '#FFFFFF',
@@ -101,20 +105,22 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: SCREEN_HEIGHT * 0.02,
     fontWeight: 'bold',
+    fontFamily: 'KnulTrial-Regular',
   },
   guestContainer: {
     position: 'absolute',
-    height: SCREEN_HEIGHT * 0.2,
+    height: SCREEN_HEIGHT * 0.18,
     bottom: 0,
     width: '100%',
     alignItems: 'center',
-    // backgroundColor: 'orange',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
 
   guest: {
     color: '#FFFFFF',
     fontSize: SCREEN_HEIGHT * 0.02,
+    fontFamily: 'KnulTrial-Regular',
+    // backgroundColor: 'orange',
   },
 });
 

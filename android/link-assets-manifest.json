@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/KnulTrial-Bold.otf",
+      "sha1": "148337fad4b814e028bf6c82a98935737171b5b4"
+    },
+    {
+      "path": "src/assets/fonts/KnulTrial-Regular.otf",
+      "sha1": "ff1ff3c89a1a67e4377bc1f90d45784fa4490dbb"
+    }
+  ]
+}

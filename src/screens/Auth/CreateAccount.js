@@ -6,52 +6,55 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Header from '../../components/Header';
 
-const SignUpScreen = () => {
+const SignUpScreen = ({navigation}) => {
   const [selectedOption, setSelectedOption] = useState('');
+
+  const handleContinue = () => {
+    if (!selectedOption) {
+      Alert.alert('Error', 'Please select an option to continue!');
+      return;
+    }
+
+    if (selectedOption === 'rent') {
+      navigation.navigate('');
+    } else if (selectedOption === 'list') {
+      navigation.navigate('RegisterAsOwner');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Create an account" />
+      <Header title="Create an account" navigation={navigation} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.optionsContainer}>
           <TouchableOpacity
             style={styles.option}
             onPress={() => setSelectedOption('rent')}>
-            <Icon
-              name={
-                selectedOption === 'rent'
-                  ? 'radio-button-on'
-                  : 'radio-button-off'
-              }
-              size={24}
-              color="#191919"
-              style={styles.radioButton}
-            />
+            <View style={styles.radioOuterCircle}>
+              {selectedOption === 'rent' && (
+                <View style={styles.radioInnerCircle} />
+              )}
+            </View>
             <Text style={styles.optionText}>I'm here to Rent</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.option}
             onPress={() => setSelectedOption('list')}>
-            <Icon
-              name={
-                selectedOption === 'list'
-                  ? 'radio-button-on'
-                  : 'radio-button-off'
-              }
-              size={24}
-              color="#191919"
-              style={styles.radioButton}
-            />
+            <View style={styles.radioOuterCircle}>
+              {selectedOption === 'list' && (
+                <View style={styles.radioInnerCircle} />
+              )}
+            </View>
             <Text style={styles.optionText}>I'm here to list my boat</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity style={styles.btn} onPress={handleContinue}>
         <Text style={styles.btnText}>Continue</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -80,12 +83,26 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 10,
   },
-  radioButton: {
+  radioOuterCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#555553',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 10,
+  },
+  radioInnerCircle: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#555553',
   },
   optionText: {
     fontSize: 16,
     color: '#FFFFFF',
+    fontFamily: 'KnulTrial-Regular',
   },
   btn: {
     position: 'absolute',
@@ -102,6 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#111111',
     fontWeight: '500',
+    fontFamily: 'KnulTrial-Regular',
   },
 });
 
