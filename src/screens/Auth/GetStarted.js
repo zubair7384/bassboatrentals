@@ -25,7 +25,7 @@ const GetStarted = ({navigation}) => {
           <View style={styles.btnRow}>
             <TouchableOpacity
               style={styles.btnSignInContainer}
-              onPress={() => navigation.navigate('OwnerHome')}>
+              onPress={() => navigation.navigate('Main')}>
               <Text style={styles.btnSignInText}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity

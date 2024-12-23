@@ -3,12 +3,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import SplashScreen from '../screens/Auth/SplashScreen';
 import GetStartedScreen from '../screens/Auth/GetStarted';
-import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterAsOwner from '../screens/Auth/RegisterAsOwner';
-import RegisterOwnerDetails from '../screens/Auth/RegisterAsOwnerDetails';
-import RegisterAsRenter from '../screens/Auth/RegisterAsRenter';
 import CreateAccount from '../screens/Auth/CreateAccount';
-import OwnerHomeScreen from '../screens/Owner/OwnerHome';
+import OwnerNavigator from './OwnerNavigator';
+import MyboatsDetailsScreen from '../screens/Owner/MyboatsDetails';
+import RegisterOwnerDetailsScreen from '../screens/Auth/RegisterAsOwnerDetails';
+import OwnerAllTransactionScreen from '../screens/Owner/OwnerAllTransaction';
 
 const Stack = createStackNavigator();
 
@@ -37,13 +37,23 @@ const AppNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="RegisterOwnerDetails"
-          component={RegisterOwnerDetails}
+          name="Main"
+          component={OwnerNavigator}
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="OwnerHome"
-          component={OwnerHomeScreen}
+          name="MyboatsDetails"
+          component={MyboatsDetailsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RegisterOwnerDetails"
+          component={RegisterOwnerDetailsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OwnerAllTransaction"
+          component={OwnerAllTransactionScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

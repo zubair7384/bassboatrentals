@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CardList = ({
-  navigation,
   title,
   subtitle,
   onPress,
@@ -17,7 +16,10 @@ const CardList = ({
       <View style={[styles.card, {backgroundColor: cardColor}]}>
         {customIcon &&
           (typeof customIcon === 'number' ? (
-            <Image source={customIcon} style={{height: height, width: width}} />
+            <Image
+              source={customIcon}
+              style={{height: height, width: width, borderRadius: 8}}
+            />
           ) : (
             customIcon
           ))}
