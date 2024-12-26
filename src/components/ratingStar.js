@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     marginBottom: 5,
+    height: 24,
   },
 });
 

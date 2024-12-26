@@ -7,8 +7,8 @@ import RegisterAsOwner from '../screens/Auth/RegisterAsOwner';
 import CreateAccount from '../screens/Auth/CreateAccount';
 import OwnerNavigator from './OwnerNavigator';
 import MyboatsDetailsScreen from '../screens/Owner/MyboatsDetails';
-import RegisterOwnerDetailsScreen from '../screens/Auth/RegisterAsOwnerDetails';
 import OwnerAllTransactionScreen from '../screens/Owner/OwnerAllTransaction';
+import AddBoatScreen from '../screens/Owner/AddBoat';
 
 const Stack = createStackNavigator();
 
@@ -47,13 +47,13 @@ const AppNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="RegisterOwnerDetails"
-          component={RegisterOwnerDetailsScreen}
+          name="OwnerAllTransaction"
+          component={OwnerAllTransactionScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="OwnerAllTransaction"
-          component={OwnerAllTransactionScreen}
+          name="AddBoat"
+          component={AddBoatScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

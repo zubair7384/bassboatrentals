@@ -28,7 +28,7 @@ const OwnerAllTransaction = ({navigation}) => {
 
   const handleSort = option => {
     setSelectedSort(option);
-    setModalVisible(false); // Close modal after selecting
+    setModalVisible(false);
     console.log(`Selected Sort: ${option}`);
   };
 
@@ -55,7 +55,6 @@ const OwnerAllTransaction = ({navigation}) => {
         </View>
       </ScrollView>
 
-      {/* Modal for Sorting Options */}
       <Modal
         transparent={true}
         visible={modalVisible}
@@ -163,6 +162,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
+    height: 30,
   },
   sortOption: {
     backgroundColor: '#1E1E1E',
@@ -175,6 +175,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'KnulTrial-Regular',
     fontWeight: '500',
+    height: 24,
+    textAlignVertical: 'center',
+    paddingTop: 2,
   },
   applyButton: {
     backgroundColor: '#FFFFFF',
@@ -188,6 +191,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
+    height: 24,
   },
   sortOptionContainer: {
     flexDirection: 'row',

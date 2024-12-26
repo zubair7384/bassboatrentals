@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: '20',
     paddingVertical: 10,
   },
   card: {
@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     color: '#ffffff',
-    marginTop: 5,
+    marginTop: 2,
+    height: 16,
   },
   rate: {
     fontSize: 14,
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     fontFamily: 'KnulTrial-Regular',
     color: '#ffffff',
     marginTop: 2,
+    height: 16,
   },
   textContainer: {
     marginLeft: 20,
@@ -89,23 +91,20 @@ const styles = StyleSheet.create({
   btnContainer: {
     marginLeft: 'auto',
   },
-  removeBtn: {
-    marginVertical: 2,
-  },
-  detailBtn: {
-    marginVertical: 2,
-  },
+
   detailBtnText: {
     color: '#FFFFFF',
     fontFamily: 'KnulTrial-Regular',
     fontSize: 15,
     fontWeight: '500',
+    height: 24,
   },
   removeBtnText: {
     color: '#CE5050',
     fontFamily: 'KnulTrial-Regular',
     fontSize: 15,
     fontWeight: '500',
+    height: 24,
   },
 });
 

@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginVertical: 10,
     fontFamily: 'KnulTrial-Regular',
+    height: 24,
   },
   cardContainer: {
     height: 72,
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     margin: 2,
+    height: 24,
   },
 });
 

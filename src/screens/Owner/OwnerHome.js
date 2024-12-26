@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  ScrollView,
+} from 'react-native';
 import notificationIcon from '../../assets/icons/Notification.png';
 import chatIcon from '../../assets/icons/chat.png';
 import CardList from '../../components/CardList';
@@ -19,70 +26,72 @@ const OwnerHomeScreen = () => {
           <Image source={notificationIcon} style={styles.IconImage} />
         </View>
       </View>
-      <View style={styles.cardList}>
-        <CardList
-          title="Total Boats Listed"
-          subtitle="16 Boats"
-          cardColor="#6C24A1"
-          customIcon={boat_icon}
-          width="20"
-          height="20"
-          onPress={() => console.log('Pressed')}
-        />
-        <CardList
-          title="Active Bookings"
-          subtitle="4 Active"
-          cardColor="#DF6F75"
-          customIcon={boat_icon}
-          width="20"
-          height="20"
-          onPress={() => console.log('Pressed')}
-        />
-        <CardList
-          title="Add New Boat"
-          subtitle="Add new Boat"
-          cardColor="#ADCB4D"
-          customIcon={plus_icon}
-          width="20"
-          height="20"
-          onPress={() => console.log('Pressed')}
-        />
-      </View>
-      <View>
-        <View style={styles.headerBooking}>
-          <Text style={styles.headerBookingTitle}>Upcoming Bookings</Text>
-          <Text style={styles.headerBookingSubTitle}>View All</Text>
-        </View>
-        <View style={styles.bookingList}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.cardList}>
           <CardList
-            title="Mick Doe - Bass boat"
-            subtitle="Dec 15, 2024 | 10:00 AM"
-            cardColor="#ADCB4D"
-            customIcon={personOne}
-            width="43"
-            height="43"
+            title="Total Boats Listed"
+            subtitle="16 Boats"
+            cardColor="#6C24A1"
+            customIcon={boat_icon}
+            width="20"
+            height="20"
             onPress={() => console.log('Pressed')}
           />
           <CardList
-            title="John Noah - Phoenix PHX "
-            subtitle="Dec 16, 2024 | 4:15 PM"
-            cardColor="#ADCB4D"
-            customIcon={personTwo}
-            width="43"
-            height="43"
+            title="Active Bookings"
+            subtitle="4 Active"
+            cardColor="#DF6F75"
+            customIcon={boat_icon}
+            width="20"
+            height="20"
             onPress={() => console.log('Pressed')}
           />
           <CardList
-            title="Louis Jref - Nitro Z20"
-            subtitle="Jan 4th, 2025 | 11:30 AM"
+            title="Add New Boat"
+            subtitle="Add new Boat"
             cardColor="#ADCB4D"
-            customIcon={personThree}
-            width="43"
-            height="43"
+            customIcon={plus_icon}
+            width="20"
+            height="20"
             onPress={() => console.log('Pressed')}
           />
         </View>
-      </View>
+        <View>
+          <View style={styles.headerBooking}>
+            <Text style={styles.headerBookingTitle}>Upcoming Bookings</Text>
+            <Text style={styles.headerBookingSubTitle}>View All</Text>
+          </View>
+          <View style={styles.bookingList}>
+            <CardList
+              title="Mick Doe - Bass boat"
+              subtitle="Dec 15, 2024 | 10:00 AM"
+              cardColor="#ADCB4D"
+              customIcon={personOne}
+              width="43"
+              height="43"
+              onPress={() => console.log('Pressed')}
+            />
+            <CardList
+              title="John Noah - Phoenix PHX "
+              subtitle="Dec 16, 2024 | 4:15 PM"
+              cardColor="#ADCB4D"
+              customIcon={personTwo}
+              width="43"
+              height="43"
+              onPress={() => console.log('Pressed')}
+            />
+            <CardList
+              title="Louis Jref - Nitro Z20"
+              subtitle="Jan 4th, 2025 | 11:30 AM"
+              cardColor="#ADCB4D"
+              customIcon={personThree}
+              width="43"
+              height="43"
+              onPress={() => console.log('Pressed')}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -91,13 +100,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
+    paddingHorizontal: 10,
   },
   header: {
     height: 36,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
     alignItems: 'center',
+    marginTop: 10,
   },
   headerText: {
     color: '#FFFFFF',
@@ -105,6 +115,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     fontFamily: 'KnulTrial-Regular',
+    height: '100%',
   },
   headerIcon: {
     flexDirection: 'row',

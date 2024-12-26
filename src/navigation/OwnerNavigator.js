@@ -20,7 +20,7 @@ const renderTabBarIcon = (route, focused) => {
 
   if (route.name === 'Home') {
     iconName = home_icon;
-  } else if (route.name === 'MyBoats') {
+  } else if (route.name === 'Myboats') {
     iconName = vector_icon;
   } else if (route.name === 'Booking') {
     iconName = calendar_icon;
@@ -68,7 +68,7 @@ const OwnerNavigator = () => {
         },
       })}>
       <Tab.Screen name="Home" component={OwnerHomeScreen} />
-      <Tab.Screen name="MyBoats" component={MyBoatsScreen} />
+      <Tab.Screen name="Myboats" component={MyBoatsScreen} />
       <Tab.Screen name="Booking" component={BookingScreen} />
       <Tab.Screen name="Payments" component={OwnerPaymentScreen} />
       <Tab.Screen name="Profile" component={OwnerProfileScreen} />

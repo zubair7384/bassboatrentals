@@ -11,7 +11,6 @@ import {
 import Header from '../../components/Header';
 import boatImage from '../../assets/images/bbr_rect.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import OwnerBoatDetails from '../../components/OwnerBoatFeatures';
 import OwnerBoatInfo from '../../components/OwnerBoatInfo';
 import OwnerBoatReviews from '../../components/OwnerBoatReviews';
 import OwnerCalendar from '../../components/OwnerCalendar';
@@ -137,6 +136,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     marginTop: 10,
+    height: 24,
   },
   boatCategory: {
     color: '#fff',
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     marginTop: 10,
+    height: 24,
   },
   model: {
     borderWidth: 1,
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
+    height: 24,
   },
   collapseContainer: {
     marginTop: 20,

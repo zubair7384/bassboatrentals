@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     height: 37,
   },
   pageNumber: {
-    padding: 10,
     marginHorizontal: 5,
     borderRadius: 5,
     borderWidth: 1,
@@ -67,8 +66,9 @@ const styles = StyleSheet.create({
     height: 37,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
-    alignSelf: 'center',
+    justifyContent: 'center',
   },
+
   activePage: {
     borderColor: '#CC5500',
   },
@@ -77,7 +77,11 @@ const styles = StyleSheet.create({
     color: '#36454F',
     fontWeight: '400',
     fontFamily: 'Poppins-Regular',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    lineHeight: 24,
   },
+
   activeText: {
     color: '#CC5500',
   },

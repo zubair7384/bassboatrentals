@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import Icons from 'react-native-vector-icons/EvilIcons';
 import {MONEY_NOTE} from '../../strings/en';
 import TransactionCard from '../../components/TransactionCard';
 
@@ -84,6 +83,7 @@ const styles = StyleSheet.create({
     fontFamily: 'KnulTrial-Regular',
     fontSize: 16,
     fontWeight: '500',
+    height: 24,
   },
   btnMngPaymentContainer: {
     justifyContent: 'center',
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     textAlign: 'center',
+    height: 24,
   },
   balanceContainer: {
     justifyContent: 'center',

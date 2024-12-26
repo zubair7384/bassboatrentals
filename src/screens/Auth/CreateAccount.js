@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     fontFamily: 'KnulTrial-Regular',
+    height: 24,
   },
   btn: {
     position: 'absolute',
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     color: '#111111',
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
+    height: 24,
   },
 });
 

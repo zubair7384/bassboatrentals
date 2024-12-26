@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     fontFamily: 'KnulTrial-Regular',
-    width: 100,
+    height: 24,
   },
   backButton: {
     position: 'absolute',
