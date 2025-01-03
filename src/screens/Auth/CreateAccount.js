@@ -20,7 +20,7 @@ const SignUpScreen = ({navigation}) => {
     }
 
     if (selectedOption === 'rent') {
-      navigation.navigate('');
+      navigation.navigate('RegisterAsRenter');
     } else if (selectedOption === 'list') {
       navigation.navigate('RegisterAsOwner');
     }

@@ -120,52 +120,56 @@ const RegisterAsBoatOwner = ({navigation}) => {
             placeholderTextColor={'#979797'}
             onChangeText={text => handleInputChange(text, 'referalCode')}
           />
-          <View style={[styles.inputRow, {alignItems: 'center'}]}>
-            {/* Age Input */}
+
+          <View style={styles.inputRow}>
             <TextInput
               placeholder="Age"
-              style={[styles.inputHalf, {flex: 0.2, minWidth: 60}]}
+              style={[styles.inputHalf, {flex: 0.1}]}
               placeholderTextColor={'#979797'}
               onChangeText={text => handleInputChange(text, 'age')}
             />
 
-            <Dropdown
-              style={[styles.dropdown, {flex: 0.2, minWidth: 60}]}
-              data={COUNTRIES}
-              // labelField="label"
-              // valueField="value"
-              // value={selectedCountry.value}
-              onChange={item => {
-                setSelectedCountry(item);
-                setPhoneNumber(item.value);
-              }}
-              renderLeftIcon={() => (
-                <Image
-                  source={{uri: selectedCountry.flag}}
-                  style={styles.flag}
-                />
-              )}
-              renderItem={item => (
-                <View style={styles.item}>
-                  <Image source={{uri: item.flag}} style={styles.flag} />
-                </View>
-              )}
-            />
+            <View style={styles.phoneInputContainer}>
+              <Dropdown
+                style={styles.dropdown}
+                data={COUNTRIES}
+                labelField="label"
+                valueField="value"
+                value={selectedCountry}
+                onChange={item => {
+                  setSelectedCountry(item.value); // Set the selected country value
+                  setPhoneNumber(item.value); // Update phone number prefix
+                }}
+                renderLeftIcon={() => (
+                  <Image
+                    source={{
+                      uri: COUNTRIES.find(c => c.value === selectedCountry)
+                        ?.flag,
+                    }}
+                    style={styles.flag}
+                  />
+                )}
+                renderItem={item => (
+                  <View style={styles.item}>
+                    <Image source={{uri: item.flag}} style={styles.flag} />
+                    {/* <Text style={styles.itemText}>{item.label}</Text> */}
+                  </View>
+                )}
+              />
 
-            {/* Phone Number Input */}
-            <TextInput
-              style={[styles.phoneInput, {flex: 0.6}]}
-              placeholder="Enter phone number"
-              placeholderTextColor="#979797"
-              keyboardType="phone-pad"
-              value={phoneNumber}
-              onChangeText={text =>
-                setPhoneNumber(
-                  selectedCountry.value +
-                    text.replace(selectedCountry.value, ''),
-                )
-              }
-            />
+              <TextInput
+                style={styles.inputPhoneStyle}
+                placeholder="Enter phone number"
+                placeholderTextColor="#979797"
+                keyboardType="phone-pad"
+                value={phoneNumber}
+                onChangeText={text =>
+                  setPhoneNumber(
+                    selectedCountry + text.replace(selectedCountry, ''),
+                  )
+                }
+              />
+            </View>
           </View>
         </>
       ),
@@ -365,7 +369,7 @@ const styles = StyleSheet.create({
   },
   inputRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     gap: 10,
@@ -380,7 +384,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   choseFileTitle: {
-    color: 'white',
+    color: '#979797',
   },
   choseFileContainer: {
     flexDirection: 'row',
@@ -460,14 +464,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'KnulTrial-Regular',
   },
-  dropdown: {
-    backgroundColor: '#191919',
-    borderRadius: 8,
-    height: 50,
-    paddingHorizontal: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 
   phoneInput: {
     backgroundColor: '#191919',
@@ -476,20 +472,45 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: 'white',
   },
+  phoneInputContainer: {
+    width: '100%',
+    backgroundColor: '#191919',
+    borderRadius: 8,
+    height: 50,
+    marginVertical: 10,
+    flex: 0.9,
+    flexDirection: 'row',
+  },
+  dropdown: {
+    height: '100%',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    backgroundColor: '#242424',
+    flex: 0.2,
+    borderRadius: 8,
+  },
   flag: {
-    width: 32,
-    height: 24,
+    width: 24,
+    height: 18,
     borderRadius: 4,
   },
   item: {
-    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 10,
+    justifyContent: 'center',
+  },
+  itemText: {
+    color: '#111111',
+    fontSize: 16,
   },
 
-  itemText: {
-    color: '#ffffff',
-    fontSize: 16,
+  inputPhoneStyle: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    color: 'white',
+    height: '100%',
+    paddingLeft: 10,
   },
 });
 

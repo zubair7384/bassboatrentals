@@ -4,8 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import SplashScreen from '../screens/Auth/SplashScreen';
 import GetStartedScreen from '../screens/Auth/GetStarted';
 import RegisterAsOwner from '../screens/Auth/RegisterAsOwner';
+import RegisterAsRenter from '../screens/Auth/RegisterAsRenter';
 import CreateAccount from '../screens/Auth/CreateAccount';
 import OwnerNavigator from './OwnerNavigator';
+import RenterNavigator from './RenterNavigator';
 import MyboatsDetailsScreen from '../screens/Owner/MyboatsDetails';
 import OwnerAllTransactionScreen from '../screens/Owner/OwnerAllTransaction';
 import AddBoatScreen from '../screens/Owner/AddBoat';
@@ -37,8 +39,18 @@ const AppNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Main"
+          name="RegisterAsRenter"
+          component={RegisterAsRenter}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OwnerHome"
           component={OwnerNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RenterHome"
+          component={RenterNavigator}
           options={{headerShown: false}}
         />
         <Stack.Screen
