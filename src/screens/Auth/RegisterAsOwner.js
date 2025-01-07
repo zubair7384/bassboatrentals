@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,14 +12,14 @@ import {
   Image,
 } from 'react-native';
 import Header from '../../components/Header';
-import {INCOME_TAX, TERMS_CONDITIONS, COUNTRIES} from '../../strings/en';
+import { INCOME_TAX, TERMS_CONDITIONS, COUNTRIES } from '../../strings/en';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {Dropdown} from 'react-native-element-dropdown';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Dropdown } from 'react-native-element-dropdown';
 
-const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const RegisterAsBoatOwner = ({navigation}) => {
+const RegisterAsBoatOwner = ({ navigation }) => {
   const scrollViewRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
@@ -30,8 +30,6 @@ const RegisterAsBoatOwner = ({navigation}) => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const totalInputs = 15;
-
-  const [filledInputs, setFilledInputs] = useState(0);
 
   const handleInputChange = (text, inputName) => {
     setInputStates(prevState => ({
@@ -52,20 +50,20 @@ const RegisterAsBoatOwner = ({navigation}) => {
     }).start();
   }, [inputStates]);
 
-  const handleChooseFile = () => {
-    launchImageLibrary(
-      {
-        mediaType: 'photo',
-      },
-      response => {
-        if (response?.assets?.length) {
-          setProfilePicture(response.assets[0]);
-        } else if (response.errorMessage) {
-          console.error('Image Picker Error:', response.errorMessage);
-        }
-      },
-    );
-  };
+  // const handleChooseFile = () => {
+  //   launchImageLibrary(
+  //     {
+  //       mediaType: 'photo',
+  //     },
+  //     response => {
+  //       if (response?.assets?.length) {
+  //         setProfilePicture(response.assets[0]);
+  //       } else if (response.errorMessage) {
+  //         console.error('Image Picker Error:', response.errorMessage);
+  //       }
+  //     },
+  //   );
+  // };
 
   const sections = [
     {
@@ -95,7 +93,7 @@ const RegisterAsBoatOwner = ({navigation}) => {
           />
           <View style={styles.choseFileContainer}>
             <Text style={styles.choseFileTitle}>Profile Picture</Text>
-            <TouchableOpacity onPress={handleChooseFile}>
+            <TouchableOpacity>
               <View style={styles.choseFile}>
                 {profilePicture ? (
                   <Text style={styles.choseFileText} numberOfLines={1}>
@@ -124,7 +122,7 @@ const RegisterAsBoatOwner = ({navigation}) => {
           <View style={styles.inputRow}>
             <TextInput
               placeholder="Age"
-              style={[styles.inputHalf, {flex: 0.1}]}
+              style={[styles.inputHalf, { flex: 0.1 }]}
               placeholderTextColor={'#979797'}
               onChangeText={text => handleInputChange(text, 'age')}
             />
@@ -137,8 +135,8 @@ const RegisterAsBoatOwner = ({navigation}) => {
                 valueField="value"
                 value={selectedCountry}
                 onChange={item => {
-                  setSelectedCountry(item.value); // Set the selected country value
-                  setPhoneNumber(item.value); // Update phone number prefix
+                  setSelectedCountry(item.value);
+                  setPhoneNumber(item.value);
                 }}
                 renderLeftIcon={() => (
                   <Image
@@ -151,8 +149,7 @@ const RegisterAsBoatOwner = ({navigation}) => {
                 )}
                 renderItem={item => (
                   <View style={styles.item}>
-                    <Image source={{uri: item.flag}} style={styles.flag} />
-                    {/* <Text style={styles.itemText}>{item.label}</Text> */}
+                    <Image source={{ uri: item.flag }} style={styles.flag} />
                   </View>
                 )}
               />
@@ -178,12 +175,6 @@ const RegisterAsBoatOwner = ({navigation}) => {
       id: 1,
       content: (
         <>
-          {/* <TextInput
-            placeholder="Company Name"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'companyName')}
-          /> */}
           <TextInput
             placeholder="Address Line 1"
             style={styles.input}
@@ -296,7 +287,6 @@ const RegisterAsBoatOwner = ({navigation}) => {
         ))}
       </ScrollView>
 
-      {/* Navigation Buttons */}
       <View style={styles.btnRow}>
         {currentStep > 0 && (
           <TouchableOpacity style={styles.btnPrev} onPress={handlePrevious}>
@@ -313,7 +303,7 @@ const RegisterAsBoatOwner = ({navigation}) => {
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
-            style={[styles.btnSubmit, {opacity: isChecked ? 1 : 0.5}]}
+            style={[styles.btnSubmit, { opacity: isChecked ? 1 : 0.5 }]}
             onPress={() => navigation.navigate('GetStarted')}
             disabled={!isChecked}>
             <Text style={styles.btnText}>Submit</Text>

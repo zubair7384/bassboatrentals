@@ -27,7 +27,7 @@ const Myboats = ({navigation}) => {
             customIcon={boat_img}
             width="86"
             height="86"
-            rate="$100 / Day"
+            rate="100 / Day"
             onPressViewDetail={() => navigation.navigate('MyboatsDetails')}
             onPressDelete={() => console.log('Pressed')}
           />
@@ -38,7 +38,7 @@ const Myboats = ({navigation}) => {
             customIcon={boat_img}
             width="86"
             height="86"
-            rate="$100 / Day"
+            rate="100 / Day"
             onPressViewDetail={() => navigation.navigate('MyboatsDetails')}
             onPressDelete={() => console.log('Pressed')}
           />
@@ -49,7 +49,7 @@ const Myboats = ({navigation}) => {
             customIcon={boat_img}
             width="86"
             height="86"
-            rate="$100 / Day"
+            rate="100 / Day"
             onPressViewDetail={() => navigation.navigate('MyboatsDetails')}
             onPressDelete={() => console.log('Pressed')}
           />

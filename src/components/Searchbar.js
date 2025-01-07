@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ChatIcon from '../assets/icons/chat.png';
 import NotificationIcon from '../assets/icons/Notification.png';
 
-const SearchBar = () => {
+const SearchBar = ({ onPress }) => {
   return (
     <View style={styles.searchBarContainer}>
       <View style={styles.searchBar}>
@@ -25,6 +25,7 @@ const SearchBar = () => {
           size={20}
           color="#fff"
           style={styles.icon}
+          onPress={onPress}
         />
       </View>
       <View style={styles.iconContainer}>
@@ -42,16 +43,11 @@ const SearchBar = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
   searchBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    height: 49
   },
   searchBar: {
     flexDirection: 'row',
@@ -60,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flex: 1,
     paddingHorizontal: 10,
-    height: 40,
+    height: 49
   },
   input: {
     flex: 1,

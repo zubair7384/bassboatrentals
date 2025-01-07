@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-const TransactionCard = ({paymentMethod, status, date, amount}) => {
+const TransactionCard = ({ paymentMethod, status, date, amount }) => {
   return (
     <View style={styles.transacHistoryContainer}>
       <View style={styles.transacHistoryCard}>
@@ -11,7 +11,7 @@ const TransactionCard = ({paymentMethod, status, date, amount}) => {
         </View>
         <Text style={styles.payMethodDate}>{date}</Text>
       </View>
-      <Text style={styles.payMoney}>- ${amount}</Text>
+      <Text style={styles.payMoney}>{amount}</Text>
     </View>
   );
 };
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginLeft: 10,
   },
-  paymentMethodCard: {flexDirection: 'row'},
+  paymentMethodCard: { flexDirection: 'row' },
   payMethodTitle: {
     color: 'white',
     fontSize: 16,

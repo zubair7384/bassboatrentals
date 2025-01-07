@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import boat2 from '../assets/images/boat_img2.png';
 
 const SliderCard = () => {
@@ -28,10 +28,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOpacity: 0.5,
-    shadowOffset: {width: 0, height: 4},
+    shadowOffset: { width: 0, height: 4 },
     shadowRadius: 4,
     elevation: 5,
-    marginRight: 20,
   },
   image: {
     width: '100%',

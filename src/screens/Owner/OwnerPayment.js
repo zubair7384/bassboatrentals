@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {MONEY_NOTE} from '../../strings/en';
+import { MONEY_NOTE } from '../../strings/en';
 import TransactionCard from '../../components/TransactionCard';
 
-const OwnerPayment = ({navigation}) => {
+const OwnerPayment = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.paymentContainer}>
@@ -18,7 +18,7 @@ const OwnerPayment = ({navigation}) => {
         <View style={styles.balanceContainer}>
           <Text style={styles.balTitle}>Current Balance</Text>
           <View style={styles.balCreditContainer}>
-            <Text style={styles.balCredit}>$8,545.00</Text>
+            <Text style={styles.balCredit}>8,545.00</Text>
             <Icon name="eye-off" size={24} color="white" />
             {/* <Icon name="eye" size={24} color="white" /> */}
           </View>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginLeft: 10,
   },
-  paymentMethodCard: {flexDirection: 'row'},
+  paymentMethodCard: { flexDirection: 'row' },
   payMethodTitle: {
     color: 'white',
     fontSize: 16,
