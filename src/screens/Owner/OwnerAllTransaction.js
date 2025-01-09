@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -15,7 +15,7 @@ import sort_by from '../../assets/icons/sort_by.png';
 import TransactionCard from '../../components/TransactionCard';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const OwnerAllTransaction = ({navigation}) => {
+const OwnerAllTransaction = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('');
 
@@ -29,7 +29,7 @@ const OwnerAllTransaction = ({navigation}) => {
   const handleSort = option => {
     setSelectedSort(option);
     setModalVisible(false);
-    console.log(`Selected Sort: ${option}`);
+    // console.log(`Selected Sort: {option}`);
   };
 
   return (

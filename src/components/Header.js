@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {HEADER_HEIGHT} from '../utils/dimensions';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { HEADER_HEIGHT } from '../utils/dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconFeather from 'react-native-vector-icons/Feather';
 
-const Header = ({title, navigation, editBtn, onPress}) => {
+const Header = ({ title, navigation, editBtn, onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'KnulTrial-Regular',
     height: 24,
+    textAlignVertical: 'center'
   },
   backButton: {
     position: 'absolute',

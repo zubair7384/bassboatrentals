@@ -1,28 +1,31 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import boat2 from '../assets/images/boat_img2.png';
 
-const SliderCard = () => {
+const BoatsGallery = ({onPress}) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image source={boat2} style={styles.image} />
-      <View style={styles.badge}>
-        <Text style={styles.badgeText}>1-3 People</Text>
+      <View style={styles.badgeContainer}>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>250/Hour</Text>
+        </View>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>1-3 People</Text>
+        </View>
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>Nitro Z20</Text>
-        <Text style={styles.subtitle}>
-          1300 Calvary Rd, Wills, TX 77318, USA
-        </Text>
+        <Text style={styles.subtitle}>Calvary Rd, Wills, TX 77318, USA</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    width: 222,
-    height: 272,
+    width: '100%',
+    aspectRatio: 0.75,
     backgroundColor: '#fff',
     borderRadius: 20,
     overflow: 'hidden',
@@ -31,20 +34,27 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 4},
     shadowRadius: 4,
     elevation: 5,
-    marginRight: 20,
   },
+
   image: {
     width: '100%',
     height: '100%',
-    objectFit: 'cover',
+    resizeMode: 'cover',
   },
-  badge: {
+
+  badgeContainer: {
     position: 'absolute',
     top: 16,
-    right: 16,
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  badge: {
     backgroundColor: '#0000003D',
     borderRadius: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     paddingVertical: 4,
   },
   badgeText: {
@@ -52,12 +62,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '400',
     fontFamily: 'KnulTrial-Regular',
+    height: 15,
+    alignContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   textContainer: {
     position: 'absolute',
     bottom: 10,
     left: 0,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
   },
   title: {
     color: '#fff',
@@ -72,7 +86,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
+    height: 30,
   },
 });
 
-export default SliderCard;
+export default BoatsGallery;

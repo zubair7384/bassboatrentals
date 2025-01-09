@@ -21,6 +21,10 @@ export const INSURANCE_POLICY =
 export const AGE_RESTRICTION =
   '"To rent a bass boat with BBR you need to be at least 21 years old. To rent any other type of boat with BBR you need to be at least 18 years old. In all cases it is the responsibility of the renter to follow the state regulations and local water body regulations for the location in which you are using the vessel."';
 
+export const FORGOT_PASSWORD = 'Forgot Password';
+export const FORGOT_PASSWORD_TEXT =
+  'Write help text here Write help text here Write help text here';
+
 export const COUNTRIES = [
   {
     label: 'United States',

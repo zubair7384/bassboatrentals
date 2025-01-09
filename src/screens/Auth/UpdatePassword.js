@@ -1,59 +1,55 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
   SafeAreaView,
+  View,
   Text,
+  StyleSheet,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Feather';
 
-const LoginScreen = ({navigation}) => {
+const UpdatePassword = ({navigation}) => {
   const [inputStates, setInputStates] = useState({});
+
   const handleInputChange = (text, inputName) => {
     setInputStates(prevState => ({
       ...prevState,
       [inputName]: text.trim(),
     }));
   };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header title={'Sign in'} navigation={navigation} />
+      <Header title={'Update Password'} navigation={navigation} />
       <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
+        <View style={styles.passwordContainer}>
           <TextInput
-            placeholder="Email"
+            placeholder="Password"
             style={styles.input}
             placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'email')}
+            onChangeText={text => handleInputChange(text, 'password')}
+            secureTextEntry={true}
           />
-          <View style={styles.passwordContainer}>
-            <TextInput
-              placeholder="Password"
-              style={styles.input}
-              placeholderTextColor={'#979797'}
-              onChangeText={text => handleInputChange(text, 'password')}
-              secureTextEntry={true}
-            />
-            {/* <Icon name="eye" size={24} color="#979797" style={styles.icon} /> */}
-            <Icon
-              name="eye-off"
-              size={20}
-              color="#979797"
-              style={styles.icon}
-            />
-          </View>
+          {/* <Icon name="eye" size={24} color="#979797" style={styles.icon} /> */}
+          <Icon name="eye-off" size={20} color="#979797" style={styles.icon} />
         </View>
-
-        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableOpacity>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            placeholder="Password"
+            style={styles.input}
+            placeholderTextColor={'#979797'}
+            onChangeText={text => handleInputChange(text, 'password')}
+            secureTextEntry={true}
+          />
+          {/* <Icon name="eye" size={24} color="#979797" style={styles.icon} /> */}
+          <Icon name="eye-off" size={20} color="#979797" style={styles.icon} />
+        </View>
 
         <TouchableOpacity
           style={styles.continueButton}
-          onPress={() => navigation.navigate('RenterHome')}>
+          onPress={() => navigation.navigate('GetStarted')}>
           <Text style={styles.continueButtonText}>Continue</Text>
         </TouchableOpacity>
       </View>
@@ -68,15 +64,8 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
+    marginTop: 20,
     margin: 10,
-  },
-  forgotPasswordText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '400',
-    alignSelf: 'flex-end',
-    marginTop: 10,
-    marginBottom: 20,
   },
   continueButton: {
     position: 'absolute',
@@ -89,13 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
-  continueButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-    fontFamily: 'knultrial-regular',
-    lineHeight: 24,
-  },
+  continueButtonText: {},
   input: {
     backgroundColor: '#191919',
     height: 56,
@@ -118,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default UpdatePassword;

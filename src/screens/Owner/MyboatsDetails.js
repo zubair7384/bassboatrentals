@@ -15,6 +15,7 @@ import OwnerBoatInfo from '../../components/OwnerBoatInfo';
 import OwnerBoatReviews from '../../components/OwnerBoatReviews';
 import OwnerCalendar from '../../components/OwnerCalendar';
 import OwnerBoatFeatures from '../../components/OwnerBoatFeatures';
+import mail_icon from '../../assets/icons/mail_icon.png';
 
 const MyboatsDetails = ({navigation}) => {
   const [isFeatures, setIsFeatures] = useState(false);
@@ -24,8 +25,16 @@ const MyboatsDetails = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="View Details" editBtn="edit" navigation={navigation} />
+      <Header title="View Details" navigation={navigation} />
       <ScrollView style={styles.scrollviewStyle}>
+        <TouchableOpacity
+          style={styles.bookNowButton}
+          onPress={() => {
+            navigation.navigate('Booking');
+          }}>
+          <Image source={mail_icon} style={styles.mailIcon} />
+          <Text style={styles.bookNowButtonText}>Book Now</Text>
+        </TouchableOpacity>
         <Image
           source={boatImage}
           style={styles.bannerImage}
@@ -184,6 +193,28 @@ const styles = StyleSheet.create({
     color: '#aaa',
     fontSize: 14,
     lineHeight: 20,
+  },
+  bookNowButton: {
+    flexDirection: 'row',
+    backgroundColor: '#6161FC',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginVertical: 20,
+    justifyContent: 'center',
+    gap: 10,
+  },
+  bookNowButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '500',
+    fontFamily: 'KnulTrial-Regular',
+    height: 24,
+    textAlignVertical: 'center',
+  },
+  mailIcon: {
+    width: 20,
+    height: 16,
   },
 });
 

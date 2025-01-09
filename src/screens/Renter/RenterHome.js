@@ -1,10 +1,22 @@
-import React from 'react';
-import {View, StyleSheet, SafeAreaView, Text, FlatList} from 'react-native';
-import SearchBar from '../../components/Searchbar';
-import SliderCard from '../../components/SliderCard';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  FlatList,
+  Platform,
+} from 'react-native';
+import RenterHomeHeader from '../../components/RenterHomeHeader';
 import NearbyCard from '../../components/NearbyCard';
+import FilterModal from '../../components/FilterModal';
+import boat1 from '../../assets/images/boat_img1.png';
+import boat2 from '../../assets/images/boat_img2.png';
 
-const RenterHome = () => {
+const RenterHome = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedSort, setSelectedSort] = useState('');
+
   const data = [
     {id: '1', title: 'Card 1'},
     {id: '2', title: 'Card 2'},
@@ -12,36 +24,74 @@ const RenterHome = () => {
     {id: '4', title: 'Card 4'},
   ];
 
-  const renderPopularItem = ({item}) => <SliderCard key={item.id} />;
-  const renderNearByItem = ({item}) => <NearbyCard key={item.id} />;
+  const renderPopularItem = ({item}) => (
+    <View style={{marginLeft: 5}}>
+      <NearbyCard
+        key={item.id}
+        height="272"
+        width="222"
+        title="Pheonix 921 Elite"
+        subtitle="13000 Calvary Rd, Wills, TX 77318, USA"
+        img={boat2}
+        people={'1-3 people'}
+        position={'absolute'}
+      />
+    </View>
+  );
+
+  const renderNearByItem = ({item}) => (
+    <View style={{marginLeft: 5}}>
+      <NearbyCard
+        key={item.id}
+        height="130"
+        width="151"
+        title="Pheonix 921 Elite"
+        subtitle="1 - 3 people"
+        img={boat1}
+        borderRadius="8"
+      />
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar />
-      <View>
-        <Text style={styles.title}>Popular</Text>
-        <View>
+      <RenterHomeHeader
+        onPress={() => setModalVisible(true)}
+        onPressNavigation={() => navigation.navigate('Inbox')}
+      />
+      <View style={styles.content}>
+        <View style={styles.popularContent}>
+          <Text style={styles.title}>Popular</Text>
           <FlatList
             data={data}
             renderItem={renderPopularItem}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.flatListContent}
           />
         </View>
-        <Text style={styles.title}>Nearby</Text>
-        <View>
+        <View style={styles.nearByContent}>
+          <View style={styles.row}>
+            <Text style={styles.title}>Nearby</Text>
+            <Text style={styles.title}>View All</Text>
+          </View>
           <FlatList
             data={data}
             renderItem={renderNearByItem}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.flatListContent}
           />
         </View>
       </View>
+
+      <FilterModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        selectedSort={selectedSort}
+        onSortChange={setSelectedSort}
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
 };
@@ -50,20 +100,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingTop: 10,
+  },
+  content: {
+    flex: 1,
   },
   title: {
-    fontFamily: 'KnulTrial-Regular',
     fontSize: 20,
-    fontWeight: '500',
-    lineHeight: 40,
     color: '#fff',
-    height: 40,
-    marginTop: 20,
+    marginVertical: 20,
   },
-  flatListContent: {
-    paddingVertical: 10,
+  popularContent: {
+    marginLeft: 10,
+    marginTop: 40,
+  },
+  nearByContent: {
+    marginLeft: 10,
+    marginTop: 10,
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? 150 : 100,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginRight: 10,
+    marginBottom: 20,
   },
 });
 
