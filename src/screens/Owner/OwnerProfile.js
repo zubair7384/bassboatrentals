@@ -17,7 +17,7 @@ import contactIcon from '../../assets/icons/contact_icon.png';
 import worksIcon from '../../assets/icons/howItWorks_icon.png';
 import moreIcon from '../../assets/icons/more_icon.png';
 
-const OwnerProfile = () => {
+const OwnerProfile = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Details</Text>
@@ -40,7 +40,16 @@ const OwnerProfile = () => {
             {label: 'How it Works', icon: worksIcon},
             {label: 'More', icon: moreIcon},
           ].map((item, index) => (
-            <TouchableOpacity key={index} style={styles.optionRow}>
+            <TouchableOpacity
+              key={index}
+              style={styles.optionRow}
+              onPress={() => {
+                if (item.label === 'About Us') {
+                  navigation.navigate('AboutUs');
+                } else if (item.label === 'FAQ') {
+                  navigation.navigate('FAQ');
+                }
+              }}>
               <Image source={item.icon} style={styles.imageIcon} />
               <Text style={styles.optionLabel}>{item.label}</Text>
               <Icon name="chevron-right" size={24} color="#fff" />

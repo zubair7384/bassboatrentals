@@ -12,12 +12,19 @@ import MyboatsDetailsScreen from '../screens/Owner/MyboatsDetails';
 import OwnerAllTransactionScreen from '../screens/Owner/OwnerAllTransaction';
 import AddBoatScreen from '../screens/Owner/AddBoat';
 import FilterBoatsList from '../screens/Renter/FilterBoatsList';
-import BookingScreen from '../screens/Renter/Booking';
 import InboxScreen from '../screens/Renter/Inbox';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPassword';
 import ForgotPswdOTPScreen from '../screens/Auth/ForgotPswdOTP';
 import UpdatePasswordScreen from '../screens/Auth/UpdatePassword';
+import BookingScreen from '../screens/Renter/Booking/BookingInquiry';
+import PackageBookingScreen from '../screens/Renter/Booking/SelBookingPackage';
+import BookingTimeDateScreen from '../screens/Renter/Booking/BookingTimeDate';
+import BookingGroupSizeScreen from '../screens/Renter/Booking/BookingGroupSize';
+import BookCaptainScreen from '../screens/Renter/Booking/BookCaptain';
+import BookingAnythingElseScreen from '../screens/Renter/Booking/BookingAnyThingElse';
+import AboutUsScreen from '../screens/Owner/AboutUs';
+import FAQScreen from '../screens/Owner/FAQ';
 
 const Stack = createStackNavigator();
 
@@ -106,8 +113,43 @@ const AppNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="selPackageBooking"
+          component={PackageBookingScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BookingTimeDate"
+          component={BookingTimeDateScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Inbox"
           component={InboxScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BookingGroupSize"
+          component={BookingGroupSizeScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BookCaptain"
+          component={BookCaptainScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BookingAnythingElse"
+          component={BookingAnythingElseScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AboutUs"
+          component={AboutUsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FAQ"
+          component={FAQScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
