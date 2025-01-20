@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,11 @@ import {
   Image,
 } from 'react-native';
 import Header from '../../components/Header';
-import {AGE_RESTRICTION, COUNTRIES} from '../../strings/en';
+import { AGE_RESTRICTION, COUNTRIES } from '../../strings/en';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 
-const RegisterAsRenter = ({navigation}) => {
+const RegisterAsRenter = ({ navigation }) => {
   const [profilePicture, setProfilePicture] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   const [inputStates, setInputStates] = useState({});
@@ -64,7 +64,7 @@ const RegisterAsRenter = ({navigation}) => {
         <View style={styles.inputRow}>
           <TextInput
             placeholder="Age"
-            style={[styles.inputHalf, {flex: 0.1}]}
+            style={[styles.inputHalf, { flex: 0.1 }]}
             placeholderTextColor={'#979797'}
             onChangeText={text => handleInputChange(text, 'age')}
           />
@@ -73,12 +73,12 @@ const RegisterAsRenter = ({navigation}) => {
             <Dropdown
               style={styles.dropdown}
               data={COUNTRIES}
-              labelField="label"
+              // labelField="label"
               valueField="value"
               value={selectedCountry}
               onChange={item => {
-                setSelectedCountry(item.value); // Set the selected country value
-                setPhoneNumber(item.value); // Update phone number prefix
+                setSelectedCountry(item.value);
+                setPhoneNumber(item.value);
               }}
               renderLeftIcon={() => (
                 <Image
@@ -90,8 +90,7 @@ const RegisterAsRenter = ({navigation}) => {
               )}
               renderItem={item => (
                 <View style={styles.item}>
-                  <Image source={{uri: item.flag}} style={styles.flag} />
-                  {/* <Text style={styles.itemText}>{item.label}</Text> */}
+                  <Image source={{ uri: item.flag }} style={styles.flag} />
                 </View>
               )}
             />

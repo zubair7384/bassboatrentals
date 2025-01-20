@@ -24,7 +24,7 @@ const Header = ({ title, navigation, editBtn, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: HEADER_HEIGHT || 48,
+    height: HEADER_HEIGHT || 50,
     width: '100%',
     backgroundColor: 'black',
     flexDirection: 'row',
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'thin',
     textAlign: 'center',
     fontFamily: 'KnulTrial-Regular',
     height: 24,

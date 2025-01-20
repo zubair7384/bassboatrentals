@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,8 +10,10 @@ import {
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Feather';
 
-const UpdatePassword = ({navigation}) => {
+const UpdatePassword = ({ navigation }) => {
   const [inputStates, setInputStates] = useState({});
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
 
   const handleInputChange = (text, inputName) => {
     setInputStates(prevState => ({
@@ -24,27 +26,40 @@ const UpdatePassword = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <Header title={'Update Password'} navigation={navigation} />
       <View style={styles.formContainer}>
+
         <View style={styles.passwordContainer}>
           <TextInput
-            placeholder="Password"
+            placeholder="New Password"
             style={styles.input}
             placeholderTextColor={'#979797'}
             onChangeText={text => handleInputChange(text, 'password')}
-            secureTextEntry={true}
+            secureTextEntry={!passwordVisible}
           />
-          {/* <Icon name="eye" size={24} color="#979797" style={styles.icon} /> */}
-          <Icon name="eye-off" size={20} color="#979797" style={styles.icon} />
+          <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+            <Icon
+              name={passwordVisible ? "eye" : "eye-off"}
+              size={20}
+              color="#979797"
+              style={styles.icon}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.passwordContainer}>
           <TextInput
-            placeholder="Password"
+            placeholder="Re-enter New Password"
             style={styles.input}
             placeholderTextColor={'#979797'}
             onChangeText={text => handleInputChange(text, 'password')}
-            secureTextEntry={true}
+            secureTextEntry={!newPasswordVisible}
           />
-          {/* <Icon name="eye" size={24} color="#979797" style={styles.icon} /> */}
-          <Icon name="eye-off" size={20} color="#979797" style={styles.icon} />
+          <TouchableOpacity onPress={() => setNewPasswordVisible(!newPasswordVisible)}>
+            <Icon
+              name={newPasswordVisible ? "eye" : "eye-off"}
+              size={20}
+              color="#979797"
+              style={styles.icon}
+            />
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity

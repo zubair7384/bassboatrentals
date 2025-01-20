@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -10,8 +10,10 @@ import {
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Feather';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [inputStates, setInputStates] = useState({});
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
   const handleInputChange = (text, inputName) => {
     setInputStates(prevState => ({
       ...prevState,
@@ -35,15 +37,16 @@ const LoginScreen = ({navigation}) => {
               style={styles.input}
               placeholderTextColor={'#979797'}
               onChangeText={text => handleInputChange(text, 'password')}
-              secureTextEntry={true}
+              secureTextEntry={!passwordVisible}
             />
-            {/* <Icon name="eye" size={24} color="#979797" style={styles.icon} /> */}
-            <Icon
-              name="eye-off"
-              size={20}
-              color="#979797"
-              style={styles.icon}
-            />
+            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+              <Icon
+                name={passwordVisible ? "eye" : "eye-off"}
+                size={20}
+                color="#979797"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
           </View>
         </View>
 

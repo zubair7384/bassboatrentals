@@ -1,6 +1,6 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
@@ -9,4 +9,4 @@ export const SCREEN_HEIGHT = height;
 export const IMAGE_HEIGHT = SCREEN_HEIGHT * 0.4;
 export const CONTENT_HEIGHT = SCREEN_HEIGHT * 0.3;
 export const GUEST_HEIGHT = SCREEN_HEIGHT * 0.3;
-export const HEADER_HEIGHT = 48;
+export const HEADER_HEIGHT = 50;
