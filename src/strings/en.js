@@ -31,14 +31,14 @@ export const COUNTRIES = [
     value: '+1',
     flag: 'https://flagcdn.com/w320/us.png',
   },
-  {label: 'Canada', value: '+1', flag: 'https://flagcdn.com/w320/ca.png'},
+  { label: 'Canada', value: '+1', flag: 'https://flagcdn.com/w320/ca.png' },
   {
     label: 'United Kingdom',
     value: '+44',
     flag: 'https://flagcdn.com/w320/gb.png',
   },
-  {label: 'India', value: '+91', flag: 'https://flagcdn.com/w320/in.png'},
-  {label: 'Australia', value: '+61', flag: 'https://flagcdn.com/w320/au.png'},
+  { label: 'India', value: '+91', flag: 'https://flagcdn.com/w320/in.png' },
+  { label: 'Australia', value: '+61', flag: 'https://flagcdn.com/w320/au.png' },
 ];
 
 export const BOOKINGTEXT =
@@ -82,3 +82,111 @@ export const rentalBoatExpect = `• Bass boat including trailer for overnight r
 • First aid kit available
 • Boat cover available
 • Overnight trailer package includes vehicle safety kit, tire change kit, boat maintenance and wipe down kit, power cable. (available means check with the boat owner listing)`;
+
+
+export const faqData = [
+  {
+    question: 'Is there a fuel charge?',
+    answer:
+      'For all overnight rentals, please replace the fuel with the grade of gas specified by the boat owner. If you forget to replace the gas, the boat owner will have the option to hold the cost of replacement from your deposit. If you are renting the boat locally with valet drop off and collection at the lake, for up to an 8-hour rental, without the trailer package, there is no need to replace the fuel. However, if it looks like you’re going to run out of gas while on the water, use common sense and fill up with the grade of gas specified by the boat owner.',
+  },
+  {
+    question: 'Who is allowed to drive the boat?',
+    answer: 'Only individuals with a valid boating license are allowed to drive the boat.',
+  },
+  {
+    question: 'What if more than one captain would like to drive the boat?',
+    answer: 'Multiple captains can take turns driving as long as each has a valid boating license.',
+  },
+  {
+    question: 'Do I need to sign a liability waiver?',
+    answer: 'Yes, signing a liability waiver is mandatory before renting the boat.',
+  },
+  {
+    question: 'When should I sign my waiver?',
+    answer: 'You must sign the waiver at least 24 hours before the rental begins.',
+  },
+  {
+    question: 'When do I receive the keys to the boat?',
+    answer: 'You will receive the keys during check-in at the rental location.',
+  },
+  {
+    question: 'What information do I need to have ready before I sign the captain’s waiver?',
+    answer: 'You will need a valid ID, boating license, and rental agreement details.',
+  },
+  {
+    question: 'What if I want to add a passenger during the rental period?',
+    answer: 'Additional passengers can be added, provided they meet the safety requirements.',
+  },
+  {
+    question: 'Do the passengers that are minors (under 18 years of age) need to sign a liability waiver?',
+    answer: 'Minors do not need to sign a waiver, but their legal guardians must sign on their behalf.',
+  },
+  {
+    question: 'Is there a weather-related cancellation policy?',
+    answer: 'Yes, cancellations due to weather are allowed and may include a full refund or rescheduling.',
+  },
+  {
+    question: 'What is your cancellation policy?',
+    answer: 'You can cancel up to 48 hours in advance for a full refund. Within 48 hours, cancellations may incur a fee.',
+  },
+  {
+    question: 'Are reservations required?',
+    answer: 'Yes, reservations are required to secure your rental.',
+  },
+  {
+    question: 'How old do I need to be to make a bass boat rental reservation?',
+    answer: 'You must be at least 18 years old to reserve a bass boat.',
+  },
+  {
+    question: 'How does BBR verify I can operate the vessel?',
+    answer: 'Verification is done by checking your boating license and a brief operational test.',
+  },
+  {
+    question: 'Do I need a boaters license?',
+    answer: 'Yes, a valid boating license is required.',
+  },
+  {
+    question: 'Is a deposit required to rent?',
+    answer: 'Yes, a refundable deposit is required at the time of booking.',
+  },
+  {
+    question: 'Do I need insurance?',
+    answer: 'Insurance is recommended but not mandatory. BBR offers supplemental insurance options.',
+  },
+  {
+    question: 'Does BBR sell supplemental insurance?',
+    answer: 'Yes, supplemental insurance can be purchased at the time of booking.',
+  },
+  {
+    question: 'What if I find a problem with the boat I have rented?',
+    answer: 'Report any issues to the rental office immediately for assistance or a replacement boat.',
+  },
+  {
+    question: 'What if I damage the boat I have rented?',
+    answer: 'The cost of repairs will be deducted from your deposit or billed to you, depending on the damage and insurance coverage.',
+  },
+  {
+    question: 'Do you allow dogs on the boat?',
+    answer: 'The cost of repairs will be deducted from your deposit or billed to you, depending on the damage and insurance coverage.',
+  },
+];
+
+
+export const PAYOUTMETHOD_TEXT = 'Payout for reservations are released after the rental date and will take time to complete depending on your selected payout method. We can transfer payment using one of the following payout methods';
+
+export const CALENDAR_INFO = [
+  { color: "#FF0000", label: "Pending" },
+  { color: "#A020F0", label: "Waivers Pending" },
+  { color: "#00FFFF", label: "Waivers Filled" },
+  { color: "#FFA500", label: "Trip Started" },
+  { color: "#008000", label: "Trip Returned" },
+  { color: "#00FF00", label: "Finished" },
+  { color: "#800080", label: "Cancelled" },
+];
+
+
+
+
+
+

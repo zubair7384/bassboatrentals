@@ -359,7 +359,6 @@ const styles = StyleSheet.create({
   },
   inputRow: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     gap: 10,

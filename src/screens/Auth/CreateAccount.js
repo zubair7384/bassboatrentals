@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   SafeAreaView,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Header from '../../components/Header';
 
-const SignUpScreen = ({navigation}) => {
+const SignUpScreen = ({ navigation }) => {
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleContinue = () => {
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: 'KnulTrial-Regular',
     height: 24,
+    textAlignVertical: 'center'
   },
   btn: {
     position: 'absolute',
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     height: 24,
+    textAlignVertical: 'center'
   },
 });
 

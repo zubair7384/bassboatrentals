@@ -17,7 +17,7 @@ import contactIcon from '../../assets/icons/contact_icon.png';
 import worksIcon from '../../assets/icons/howItWorks_icon.png';
 import moreIcon from '../../assets/icons/more_icon.png';
 
-const OwnerProfile = ({navigation}) => {
+const OwnerProfile = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Details</Text>
@@ -33,12 +33,12 @@ const OwnerProfile = ({navigation}) => {
 
         <View style={styles.optionsContainer}>
           {[
-            {label: 'About Us', icon: aboutIcon},
-            {label: 'Pricing', icon: pricingIcon},
-            {label: 'FAQ', icon: faqIcon},
-            {label: 'Contact Us', icon: contactIcon},
-            {label: 'How it Works', icon: worksIcon},
-            {label: 'More', icon: moreIcon},
+            { label: 'About Us', icon: aboutIcon },
+            { label: 'Pricing', icon: pricingIcon },
+            { label: 'FAQ', icon: faqIcon },
+            { label: 'Contact Us', icon: contactIcon },
+            { label: 'How it Works', icon: worksIcon },
+            { label: 'More', icon: moreIcon },
           ].map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -48,6 +48,15 @@ const OwnerProfile = ({navigation}) => {
                   navigation.navigate('AboutUs');
                 } else if (item.label === 'FAQ') {
                   navigation.navigate('FAQ');
+                }
+                else if (item.label === 'Contact Us') {
+                  navigation.navigate('ContactUs');
+                }
+                else if (item.label === 'Pricing') {
+                  navigation.navigate('Pricing');
+                }
+                else if (item.label === 'How it Works') {
+                  navigation.navigate('HowItWorks');
                 }
               }}>
               <Image source={item.icon} style={styles.imageIcon} />
