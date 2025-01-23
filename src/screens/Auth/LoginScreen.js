@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,13 +6,17 @@ import {
   SafeAreaView,
   Text,
   TextInput,
+  Alert,
 } from 'react-native';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Feather';
+import {auth} from '../../firebase/firebaseConfig'; // Adjust the path to your firebase.js
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({navigation}) => {
   const [inputStates, setInputStates] = useState({});
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (text, inputName) => {
     setInputStates(prevState => ({
@@ -20,6 +24,30 @@ const LoginScreen = ({ navigation }) => {
       [inputName]: text.trim(),
     }));
   };
+
+  const handleLogin = async () => {
+    const {email, password} = inputStates;
+
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      console.log('User logged in:', userCredential.user);
+      Alert.alert('Success', `Welcome ${userCredential.user.email}`);
+      navigation.navigate('RenterHome'); // Navigate to home screen
+    } catch (error) {
+      console.error('Login error:', error.message);
+      Alert.alert('Login Failed', error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title={'Sign in'} navigation={navigation} />
@@ -30,6 +58,8 @@ const LoginScreen = ({ navigation }) => {
             style={styles.input}
             placeholderTextColor={'#979797'}
             onChangeText={text => handleInputChange(text, 'email')}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
           <View style={styles.passwordContainer}>
             <TextInput
@@ -39,9 +69,10 @@ const LoginScreen = ({ navigation }) => {
               onChangeText={text => handleInputChange(text, 'password')}
               secureTextEntry={!passwordVisible}
             />
-            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}>
               <Icon
-                name={passwordVisible ? "eye" : "eye-off"}
+                name={passwordVisible ? 'eye' : 'eye-off'}
                 size={20}
                 color="#979797"
                 style={styles.icon}
@@ -56,8 +87,11 @@ const LoginScreen = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.continueButton}
-          onPress={() => navigation.navigate('RenterHome')}>
-          <Text style={styles.continueButtonText}>Continue</Text>
+          onPress={handleLogin}
+          disabled={loading}>
+          <Text style={styles.continueButtonText}>
+            {loading ? 'Logging in...' : 'Continue'}
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
