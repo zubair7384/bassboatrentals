@@ -3,8 +3,8 @@ export const GETSTARTED_TITLE = 'Home of the tournament ready Bass Boat';
 export const GUEST = 'Continue as Guest';
 export const TERMS_CONDITIONS =
   'By signing up for BBR Bass Boat Rentals, users agree to abide by these rules and contribute to a safe, fair, and trusted community of boat renters and owners.';
-export const INCOME_TAX =
-  'Individual or Business Name ( as shown on your income tax return)';
+// export const INCOME_TAX =
+//   'Individual or Business Name ( as shown on your income tax return)';
 
 export const MONEY_NOTE =
   'Note: Money will be transfer to your account with in 24 - 48 hours';
@@ -31,14 +31,14 @@ export const COUNTRIES = [
     value: '+1',
     flag: 'https://flagcdn.com/w320/us.png',
   },
-  { label: 'Canada', value: '+1', flag: 'https://flagcdn.com/w320/ca.png' },
+  {label: 'Canada', value: '+1', flag: 'https://flagcdn.com/w320/ca.png'},
   {
     label: 'United Kingdom',
     value: '+44',
     flag: 'https://flagcdn.com/w320/gb.png',
   },
-  { label: 'India', value: '+91', flag: 'https://flagcdn.com/w320/in.png' },
-  { label: 'Australia', value: '+61', flag: 'https://flagcdn.com/w320/au.png' },
+  {label: 'India', value: '+91', flag: 'https://flagcdn.com/w320/in.png'},
+  {label: 'Australia', value: '+61', flag: 'https://flagcdn.com/w320/au.png'},
 ];
 
 export const BOOKINGTEXT =
@@ -83,7 +83,6 @@ export const rentalBoatExpect = `• Bass boat including trailer for overnight r
 • Boat cover available
 • Overnight trailer package includes vehicle safety kit, tire change kit, boat maintenance and wipe down kit, power cable. (available means check with the boat owner listing)`;
 
-
 export const faqData = [
   {
     question: 'Is there a fuel charge?',
@@ -92,43 +91,54 @@ export const faqData = [
   },
   {
     question: 'Who is allowed to drive the boat?',
-    answer: 'Only individuals with a valid boating license are allowed to drive the boat.',
+    answer:
+      'Only individuals with a valid boating license are allowed to drive the boat.',
   },
   {
     question: 'What if more than one captain would like to drive the boat?',
-    answer: 'Multiple captains can take turns driving as long as each has a valid boating license.',
+    answer:
+      'Multiple captains can take turns driving as long as each has a valid boating license.',
   },
   {
     question: 'Do I need to sign a liability waiver?',
-    answer: 'Yes, signing a liability waiver is mandatory before renting the boat.',
+    answer:
+      'Yes, signing a liability waiver is mandatory before renting the boat.',
   },
   {
     question: 'When should I sign my waiver?',
-    answer: 'You must sign the waiver at least 24 hours before the rental begins.',
+    answer:
+      'You must sign the waiver at least 24 hours before the rental begins.',
   },
   {
     question: 'When do I receive the keys to the boat?',
     answer: 'You will receive the keys during check-in at the rental location.',
   },
   {
-    question: 'What information do I need to have ready before I sign the captain’s waiver?',
-    answer: 'You will need a valid ID, boating license, and rental agreement details.',
+    question:
+      'What information do I need to have ready before I sign the captain’s waiver?',
+    answer:
+      'You will need a valid ID, boating license, and rental agreement details.',
   },
   {
     question: 'What if I want to add a passenger during the rental period?',
-    answer: 'Additional passengers can be added, provided they meet the safety requirements.',
+    answer:
+      'Additional passengers can be added, provided they meet the safety requirements.',
   },
   {
-    question: 'Do the passengers that are minors (under 18 years of age) need to sign a liability waiver?',
-    answer: 'Minors do not need to sign a waiver, but their legal guardians must sign on their behalf.',
+    question:
+      'Do the passengers that are minors (under 18 years of age) need to sign a liability waiver?',
+    answer:
+      'Minors do not need to sign a waiver, but their legal guardians must sign on their behalf.',
   },
   {
     question: 'Is there a weather-related cancellation policy?',
-    answer: 'Yes, cancellations due to weather are allowed and may include a full refund or rescheduling.',
+    answer:
+      'Yes, cancellations due to weather are allowed and may include a full refund or rescheduling.',
   },
   {
     question: 'What is your cancellation policy?',
-    answer: 'You can cancel up to 48 hours in advance for a full refund. Within 48 hours, cancellations may incur a fee.',
+    answer:
+      'You can cancel up to 48 hours in advance for a full refund. Within 48 hours, cancellations may incur a fee.',
   },
   {
     question: 'Are reservations required?',
@@ -140,7 +150,8 @@ export const faqData = [
   },
   {
     question: 'How does BBR verify I can operate the vessel?',
-    answer: 'Verification is done by checking your boating license and a brief operational test.',
+    answer:
+      'Verification is done by checking your boating license and a brief operational test.',
   },
   {
     question: 'Do I need a boaters license?',
@@ -152,41 +163,40 @@ export const faqData = [
   },
   {
     question: 'Do I need insurance?',
-    answer: 'Insurance is recommended but not mandatory. BBR offers supplemental insurance options.',
+    answer:
+      'Insurance is recommended but not mandatory. BBR offers supplemental insurance options.',
   },
   {
     question: 'Does BBR sell supplemental insurance?',
-    answer: 'Yes, supplemental insurance can be purchased at the time of booking.',
+    answer:
+      'Yes, supplemental insurance can be purchased at the time of booking.',
   },
   {
     question: 'What if I find a problem with the boat I have rented?',
-    answer: 'Report any issues to the rental office immediately for assistance or a replacement boat.',
+    answer:
+      'Report any issues to the rental office immediately for assistance or a replacement boat.',
   },
   {
     question: 'What if I damage the boat I have rented?',
-    answer: 'The cost of repairs will be deducted from your deposit or billed to you, depending on the damage and insurance coverage.',
+    answer:
+      'The cost of repairs will be deducted from your deposit or billed to you, depending on the damage and insurance coverage.',
   },
   {
     question: 'Do you allow dogs on the boat?',
-    answer: 'The cost of repairs will be deducted from your deposit or billed to you, depending on the damage and insurance coverage.',
+    answer:
+      'The cost of repairs will be deducted from your deposit or billed to you, depending on the damage and insurance coverage.',
   },
 ];
 
-
-export const PAYOUTMETHOD_TEXT = 'Payout for reservations are released after the rental date and will take time to complete depending on your selected payout method. We can transfer payment using one of the following payout methods';
+export const PAYOUTMETHOD_TEXT =
+  'Payout for reservations are released after the rental date and will take time to complete depending on your selected payout method. We can transfer payment using one of the following payout methods';
 
 export const CALENDAR_INFO = [
-  { color: "#FF0000", label: "Pending" },
-  { color: "#A020F0", label: "Waivers Pending" },
-  { color: "#00FFFF", label: "Waivers Filled" },
-  { color: "#FFA500", label: "Trip Started" },
-  { color: "#008000", label: "Trip Returned" },
-  { color: "#00FF00", label: "Finished" },
-  { color: "#800080", label: "Cancelled" },
+  {color: '#FF0000', label: 'Pending'},
+  {color: '#A020F0', label: 'Waivers Pending'},
+  {color: '#00FFFF', label: 'Waivers Filled'},
+  {color: '#FFA500', label: 'Trip Started'},
+  {color: '#008000', label: 'Trip Returned'},
+  {color: '#00FF00', label: 'Finished'},
+  {color: '#800080', label: 'Cancelled'},
 ];
-
-
-
-
-
-

@@ -1,5 +1,5 @@
-import {initializeApp} from 'firebase/app';
-import {getAuth} from 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import {getFirestore} from 'firebase/firestore';
 import {
   FIREBASE_API_KEY,
@@ -11,6 +11,7 @@ import {
   FIREBASE_APP_ID,
 } from '@env';
 
+// Firebase configuration object
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
@@ -21,34 +22,15 @@ const firebaseConfig = {
   appId: FIREBASE_APP_ID,
 };
 
+// Initialize Firebase
+let app;
+
 try {
-  const app = initializeApp(firebaseConfig);
+  app = firebase.initializeApp(firebaseConfig);
   console.log('Firebase initialized:', app.name);
 } catch (error) {
   console.error('Firebase initialization error:', error.message);
 }
 
-export const auth = getAuth();
-export const db = getFirestore();
-
-// import {initializeApp} from 'firebase/app';
-// import {getAuth} from 'firebase/auth';
-// import {getFirestore} from 'firebase/firestore';
-
-// // Hardcoded Firebase configuration
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyD_7t1nOzmWIUlPjUdqNgOuzinvZ3rACLA',
-//   authDomain: 'test-bbr.firebaseapp.com',
-//   databaseURL: 'https://test-bbr-default-rtdb.firebaseio.com',
-//   projectId: 'test-bbr',
-//   storageBucket: 'test-bbr.firebasestorage.app',
-//   messagingSenderId: '60086500861',
-//   appId: '1:60086500861:web:e20ce645e1a499c8baed94',
-//   measurementId: 'G-JDTBN1HKWG',
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// export const auth = getAuth(app); // Export Firebase Authentication
-// export const db = getFirestore(app); // Export Firestore
-// export default app;
+export const auth = app.auth();
+export const db = getFirestore(app);

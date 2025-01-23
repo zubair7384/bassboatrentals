@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
     position: 'absolute',
-    bottom: Platform.OS === 'android' ? 150 : 100,
+    bottom: Platform.OS === 'android' ? 100 : 100,
   },
   row: {
     flexDirection: 'row',
