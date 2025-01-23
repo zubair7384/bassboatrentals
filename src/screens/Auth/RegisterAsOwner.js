@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,24 +12,112 @@ import {
   Image,
 } from 'react-native';
 import Header from '../../components/Header';
-import { INCOME_TAX, TERMS_CONDITIONS, COUNTRIES } from '../../strings/en';
+import {TERMS_CONDITIONS, COUNTRIES} from '../../strings/en';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { Dropdown } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
+import {launchImageLibrary} from 'react-native-image-picker';
 
-const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
+// import {
+//   getStorage,
+//   ref as storageRef,
+//   uploadBytes,
+//   getDownloadURL,
+// } from 'firebase/storage';
 
-const RegisterAsBoatOwner = ({ navigation }) => {
+import {getDatabase, ref, set} from 'firebase/database';
+import {useAuth} from '../../firebase/AuthContext';
+
+const {height: SCREEN_HEIGHT} = Dimensions.get('window');
+const RegisterAsBoatOwner = ({navigation}) => {
   const scrollViewRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
   const [inputStates, setInputStates] = useState({});
-  const progress = useRef(new Animated.Value(0)).current;
   const [profilePicture, setProfilePicture] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0].value);
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const totalInputs = 15;
+  const progress = useRef(new Animated.Value(0)).current;
+  const db = getDatabase();
+
+  // const storage = getStorage();
+
+  const {signup} = useAuth();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const role = '';
+
+  const serverUrl = 'https://www.bbrbassboatrentals.com';
+
+  const uploadProfilePicture = async () => {
+    if (!profilePicture) {
+      console.error('No profile picture selected');
+      return null;
+    }
+
+    try {
+      // Convert the image to a Blob
+      const response = await fetch(profilePicture.uri);
+      const blob = await response.blob();
+
+      // Create FormData and append the Blob
+      const formData = new FormData();
+      formData.append('file', blob);
+
+      console.log('Uploading to:', `${serverUrl}/upload-featured-image`);
+      console.log('FormData:', formData);
+
+      // Upload to the server
+      const serverResponse = await fetch(`${serverUrl}/upload-featured-image`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('Server Response:', serverResponse);
+
+      if (serverResponse.ok) {
+        const responseData = await serverResponse.json();
+        console.log('Image uploaded successfully:', responseData);
+        return `${serverUrl}/images/${responseData.file_name}`;
+      } else {
+        console.error('Image upload failed', serverResponse.status);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const progressPercentage = (currentStep + 1) / sections?.length;
+    Animated.timing(progress, {
+      toValue: progressPercentage,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }, [currentStep, progress, sections?.length]);
+
+  useEffect(() => {
+    scrollViewRef.current?.scrollTo({y: 0, animated: true});
+  }, [currentStep]);
+
+  const handleImagePick = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 1,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.assets && response.assets.length > 0) {
+        const selectedImage = response.assets[0];
+        setProfilePicture(selectedImage);
+      }
+    });
+  };
 
   const handleInputChange = (text, inputName) => {
     setInputStates(prevState => ({
@@ -38,39 +126,61 @@ const RegisterAsBoatOwner = ({ navigation }) => {
     }));
   };
 
-  useEffect(() => {
-    const filledCount = Object.values(inputStates).filter(
-      value => value !== '',
-    ).length;
-    const progressPercentage = filledCount / totalInputs;
-    Animated.timing(progress, {
-      toValue: progressPercentage,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }, [inputStates]);
+  const handleSubmit = async () => {
+    if (!isChecked) return;
 
-  // const handleChooseFile = () => {
-  //   launchImageLibrary(
-  //     {
-  //       mediaType: 'photo',
-  //     },
-  //     response => {
-  //       if (response?.assets?.length) {
-  //         setProfilePicture(response.assets[0]);
-  //       } else if (response.errorMessage) {
-  //         console.error('Image Picker Error:', response.errorMessage);
-  //       }
-  //     },
-  //   );
-  // };
+    setLoading(true);
+    setError('');
+
+    try {
+      const userCredential = await signup(
+        inputStates.email,
+        inputStates.password,
+      );
+      const userId = userCredential.user.uid;
+
+      let profilePictureUrl = null;
+      // if (profilePicture) {
+      //   profilePictureUrl = await uploadProfilePicture();
+      // }
+
+      const userRef = ref(db, `users/${userId}`);
+      console.log('Response DB: ', userRef);
+      await set(userRef, {
+        firstName: inputStates.firstName,
+        lastName: inputStates.lastName,
+        email: inputStates.email,
+        phone: phoneNumber,
+        countryCode: selectedCountry,
+        age: inputStates.age,
+        avatar: 'Not worked yet',
+        referalCode: inputStates.referalCode || null,
+        password: inputStates.password,
+        addressLine1: inputStates.addressLine1,
+        addressLine2: inputStates.addressLine2,
+        city: inputStates.city,
+        state: inputStates.state,
+        zipCode: inputStates.zipCode,
+        socialSecurityNumber: inputStates.ssn,
+        fID: inputStates.federalId,
+        country: inputStates.country,
+        role: 'Boat Owner"',
+      });
+
+      navigation.navigate('GetStarted');
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'Failed to register');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const sections = [
     {
       id: 0,
       content: (
         <>
-          <Text style={styles.textTaxStyle}>{INCOME_TAX}</Text>
           <View style={styles.inputRow}>
             <TextInput
               placeholder="First Name"
@@ -91,15 +201,22 @@ const RegisterAsBoatOwner = ({ navigation }) => {
             placeholderTextColor={'#979797'}
             onChangeText={text => handleInputChange(text, 'email')}
           />
+
           <View style={styles.choseFileContainer}>
             <Text style={styles.choseFileTitle}>Profile Picture</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleImagePick}>
               <View style={styles.choseFile}>
                 {profilePicture ? (
-                  <Text style={styles.choseFileText} numberOfLines={1}>
-                    {profilePicture.fileName || 'Selected File'}
+                  <Text style={styles.choseFileText}>
+                    {profilePicture.fileName}
                   </Text>
                 ) : (
+                  // <View style={styles.imageContainer}>
+                  //   <Image
+                  //     source={{uri: profilePicture.uri}}
+                  //     style={{width: 50, height: 50, borderRadius: 25}}
+                  //   />
+                  // </View>
                   <Text style={styles.choseFileText}>Choose File</Text>
                 )}
               </View>
@@ -122,7 +239,7 @@ const RegisterAsBoatOwner = ({ navigation }) => {
           <View style={styles.inputRow}>
             <TextInput
               placeholder="Age"
-              style={[styles.inputHalf, { flex: 0.1 }]}
+              style={[styles.inputHalf, {flex: 0.1}]}
               placeholderTextColor={'#979797'}
               onChangeText={text => handleInputChange(text, 'age')}
             />
@@ -131,7 +248,7 @@ const RegisterAsBoatOwner = ({ navigation }) => {
               <Dropdown
                 style={styles.dropdown}
                 data={COUNTRIES}
-                labelField="label"
+                // labelField="label"
                 valueField="value"
                 value={selectedCountry}
                 onChange={item => {
@@ -149,7 +266,7 @@ const RegisterAsBoatOwner = ({ navigation }) => {
                 )}
                 renderItem={item => (
                   <View style={styles.item}>
-                    <Image source={{ uri: item.flag }} style={styles.flag} />
+                    <Image source={{uri: item.flag}} style={styles.flag} />
                   </View>
                 )}
               />
@@ -205,6 +322,7 @@ const RegisterAsBoatOwner = ({ navigation }) => {
             placeholderTextColor={'#979797'}
             onChangeText={text => handleInputChange(text, 'zipCode')}
           />
+
           <TextInput
             placeholder="Country"
             style={styles.input}
@@ -275,16 +393,15 @@ const RegisterAsBoatOwner = ({ navigation }) => {
           ]}
         />
       </View>
-
       <ScrollView
         ref={scrollViewRef}
-        contentContainerStyle={styles.scrollContainer}
-        scrollEnabled={false}>
-        {sections.map(section => (
-          <View key={section.id} style={styles.sectionContainer}>
-            {section.content}
-          </View>
-        ))}
+        contentContainerStyle={styles.ScrollViewContainer}
+        showsVerticalScrollIndicator={true}
+        scrollEnabled={true}
+        keyboardShouldPersistTaps="handled">
+        <View style={styles.sectionContainer}>
+          {sections[currentStep].content}
+        </View>
       </ScrollView>
 
       <View style={styles.btnRow}>
@@ -303,10 +420,12 @@ const RegisterAsBoatOwner = ({ navigation }) => {
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
-            style={[styles.btnSubmit, { opacity: isChecked ? 1 : 0.5 }]}
-            onPress={() => navigation.navigate('GetStarted')}
-            disabled={!isChecked}>
-            <Text style={styles.btnText}>Submit</Text>
+            style={[styles.btnSubmit, {opacity: isChecked ? 1 : 0.5}]}
+            onPress={handleSubmit}
+            disabled={!isChecked || loading}>
+            <Text style={styles.btnText}>
+              {loading ? 'Submitting...' : 'Submit'}
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -342,12 +461,12 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 40,
   },
   sectionContainer: {
-    height: SCREEN_HEIGHT * 0.6,
+    // height: SCREEN_HEIGHT * 0.8,
     justifyContent: 'center',
     paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   input: {
     backgroundColor: '#191919',
@@ -389,10 +508,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#242424',
     borderRadius: 5,
     padding: 10,
-    minWidth: 100,
-    maxWidth: '70%',
     justifyContent: 'center',
     alignItems: 'center',
+    width: 130,
+    marginVertical: 5,
   },
   choseFileText: {
     color: '#979797',

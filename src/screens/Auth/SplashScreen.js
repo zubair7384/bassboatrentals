@@ -3,7 +3,7 @@ import {View, StyleSheet, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import logo from '../../assets/images/logo.png';
 
-const SplashScreen = async ({navigation}) => {
+const SplashScreen = ({navigation}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('GetStarted');

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Feather';
-import {auth} from '../../firebase/firebaseConfig'; // Adjust the path to your firebase.js
+import {auth} from '../../firebase/firebaseConfig';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 
 const LoginScreen = ({navigation}) => {
@@ -39,9 +39,10 @@ const LoginScreen = ({navigation}) => {
         email,
         password,
       );
-      console.log('User logged in:', userCredential.user);
+      // console.log('User logged in:', userCredential.user);
+      console.log('API Data:', JSON.stringify(userCredential.user, null, 2));
       Alert.alert('Success', `Welcome ${userCredential.user.email}`);
-      navigation.navigate('RenterHome'); // Navigate to home screen
+      navigation.navigate('RenterHome');
     } catch (error) {
       console.error('Login error:', error.message);
       Alert.alert('Login Failed', error.message);
