@@ -2,14 +2,28 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import logo from '../../assets/images/logo.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getToken} from '../../utils/storage';
 
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.replace('GetStarted');
-    }, 3000);
+    const checkToken = async () => {
+      const token = await getToken();
+      if (token) {
+        console.log('Token found, navigating to Home...');
+        navigation.replace('RenterHome');
+      } else {
+        navigation.replace('GetStarted');
+      }
+    };
 
-    return () => clearTimeout(timer);
+    checkToken();
+
+    // const timer = setTimeout(() => {
+    //   navigation.replace('GetStarted');
+    // }, 3000);
+
+    // return () => clearTimeout(timer);
   }, [navigation]);
 
   return (

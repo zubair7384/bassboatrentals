@@ -11,14 +11,14 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import BbrRect from '../../assets/images/bbr_rect.png';
-import { GETSTARTED_TITLE, GUEST } from '../../strings/en';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../utils/dimensions';
+import {GETSTARTED_TITLE, GUEST} from '../../strings/en';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../utils/dimensions';
 
-const GetStarted = ({ navigation }) => {
+const GetStarted = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}

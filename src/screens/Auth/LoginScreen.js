@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,48 +6,100 @@ import {
   SafeAreaView,
   Text,
   TextInput,
-  Alert,
+  Platform,
 } from 'react-native';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Feather';
 import {auth} from '../../firebase/firebaseConfig';
 import {signInWithEmailAndPassword} from 'firebase/auth';
+import {useFormik} from 'formik';
+import Toast from 'react-native-toast-message';
+import {loginValidationSchema} from '../../utils/validationSchemas';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {saveToken} from '../../utils/storage';
 
 const LoginScreen = ({navigation}) => {
-  const [inputStates, setInputStates] = useState({});
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState('false');
 
-  const handleInputChange = (text, inputName) => {
-    setInputStates(prevState => ({
-      ...prevState,
-      [inputName]: text.trim(),
-    }));
+  useEffect(() => {
+    const loadSavedCredentials = async () => {
+      try {
+        const savedCredentials = await AsyncStorage.getItem('userCredentials');
+        if (savedCredentials) {
+          const {email, password} = JSON.parse(savedCredentials);
+          formik.setValues({email, password});
+          setRememberMe(true);
+        }
+      } catch (error) {
+        console.error('Failed to load saved credentials:', error);
+      }
+    };
+
+    loadSavedCredentials();
+  }, [formik, setRememberMe]);
+
+  const saveCredentials = async (email, password) => {
+    if (rememberMe) {
+      try {
+        await AsyncStorage.setItem(
+          'userCredentials',
+          JSON.stringify({email, password}),
+        );
+        console.log('Credentials saved');
+      } catch (error) {
+        console.error('Failed to save credentials:', error);
+      }
+    } else {
+      await AsyncStorage.removeItem('userCredentials');
+    }
   };
 
-  const handleLogin = async () => {
-    const {email, password} = inputStates;
+  // Formik setup
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: loginValidationSchema,
+    onSubmit: async values => {
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          values.email,
+          values.password,
+        );
 
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password');
-      return;
-    }
+        console.log('Firebase Login Response:', userCredential);
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
-      // console.log('User logged in:', userCredential.user);
-      console.log('API Data:', JSON.stringify(userCredential.user, null, 2));
-      Alert.alert('Success', `Welcome ${userCredential.user.email}`);
-      navigation.navigate('RenterHome');
-    } catch (error) {
-      console.error('Login error:', error.message);
-      Alert.alert('Login Failed', error.message);
-    }
-  };
+        const token = await userCredential.user.getIdToken();
+
+        // console.log('User Token:', token);
+
+        // Save token or credentials as per the existing logic
+        await saveToken(token);
+        saveCredentials(values.email, values.password);
+
+        Toast.show({
+          type: 'success',
+          text1: 'Welcome!',
+          text2: `Welcome back, ${userCredential.user.email}!`,
+          visibilityTime: 3000,
+        });
+
+        // Navigate to the home screen
+        navigation.navigate('OwnerHome');
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Login Failed',
+          text2: error.message,
+          visibilityTime: 2000,
+        });
+      }
+    },
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -58,16 +110,24 @@ const LoginScreen = ({navigation}) => {
             placeholder="Email"
             style={styles.input}
             placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'email')}
+            value={formik.values.email}
+            onChangeText={formik.handleChange('email')}
+            onBlur={formik.handleBlur('email')}
             keyboardType="email-address"
             autoCapitalize="none"
           />
+          {formik.touched.email && formik.errors.email && (
+            <Text style={styles.errorText}>{formik.errors.email}</Text>
+          )}
+
           <View style={styles.passwordContainer}>
             <TextInput
               placeholder="Password"
               style={styles.input}
               placeholderTextColor={'#979797'}
-              onChangeText={text => handleInputChange(text, 'password')}
+              value={formik.values.password}
+              onChangeText={formik.handleChange('password')}
+              onBlur={formik.handleBlur('password')}
               secureTextEntry={!passwordVisible}
             />
             <TouchableOpacity
@@ -80,7 +140,21 @@ const LoginScreen = ({navigation}) => {
               />
             </TouchableOpacity>
           </View>
+          {formik.touched.password && formik.errors.password && (
+            <Text style={styles.errorText}>{formik.errors.password}</Text>
+          )}
         </View>
+
+        <TouchableOpacity
+          style={styles.rememberMeContainer}
+          onPress={() => setRememberMe(!rememberMe)}>
+          <Icon
+            name={rememberMe ? 'check-square' : 'square'}
+            size={20}
+            color="#fff"
+          />
+          <Text style={styles.rememberMeText}>Remember Me</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
@@ -88,13 +162,18 @@ const LoginScreen = ({navigation}) => {
 
         <TouchableOpacity
           style={styles.continueButton}
-          onPress={handleLogin}
-          disabled={loading}>
+          onPress={formik.handleSubmit}>
           <Text style={styles.continueButtonText}>
-            {loading ? 'Logging in...' : 'Continue'}
+            {formik.isSubmitting ? 'Logging in...' : 'Continue'}
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Toastify component with custom topOffset */}
+      <Toast
+        position="top"
+        topOffset={Platform.OS === 'ios' ? 50 : 10} // Adjust top offset for iOS
+      />
     </SafeAreaView>
   );
 };
@@ -153,6 +232,21 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginLeft: 10,
+  },
+  rememberMeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  rememberMeText: {
+    color: '#FFFFFF',
+    marginLeft: 8,
+    fontSize: 14,
   },
 });
 
