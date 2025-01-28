@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,10 +12,12 @@ import NearbyCard from '../../components/NearbyCard';
 import FilterModal from '../../components/FilterModal';
 import boat1 from '../../assets/images/boat_img1.png';
 import boat2 from '../../assets/images/boat_img2.png';
+import {getToken} from '../../utils/storage';
 
 const RenterHome = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('');
+  const [token, setToken] = useState(null);
 
   const data = [
     {id: '1', title: 'Card 1'},
@@ -23,6 +25,21 @@ const RenterHome = ({navigation}) => {
     {id: '3', title: 'Card 3'},
     {id: '4', title: 'Card 4'},
   ];
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await getToken();
+      if (token) {
+        // console.log('Retrieved token:', token);
+        setToken(token);
+      } else {
+        console.log('No token found');
+        navigation.replace('Login');
+      }
+    };
+
+    fetchToken();
+  }, [navigation, setToken]);
 
   const renderPopularItem = ({item}) => (
     <View style={{marginLeft: 5}}>

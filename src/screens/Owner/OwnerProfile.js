@@ -17,7 +17,28 @@ import contactIcon from '../../assets/icons/contact_icon.png';
 import worksIcon from '../../assets/icons/howItWorks_icon.png';
 import moreIcon from '../../assets/icons/more_icon.png';
 
-const OwnerProfile = ({ navigation }) => {
+import {signOut} from 'firebase/auth';
+import {removeToken} from '../../utils/storage';
+import {auth} from '../../firebase/firebaseConfig';
+
+const OwnerProfile = ({navigation}) => {
+  const handleLogout = async navigation => {
+    try {
+      // Firebase sign out
+      await signOut(auth);
+      console.log('User signed out from Firebase.');
+
+      // Clear AsyncStorage
+      await removeToken();
+      console.log('Token removed from AsyncStorage.');
+
+      // Navigate to Login screen
+      navigation.replace('GetStarted');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Details</Text>
@@ -33,12 +54,12 @@ const OwnerProfile = ({ navigation }) => {
 
         <View style={styles.optionsContainer}>
           {[
-            { label: 'About Us', icon: aboutIcon },
-            { label: 'Pricing', icon: pricingIcon },
-            { label: 'FAQ', icon: faqIcon },
-            { label: 'Contact Us', icon: contactIcon },
-            { label: 'How it Works', icon: worksIcon },
-            { label: 'More', icon: moreIcon },
+            {label: 'About Us', icon: aboutIcon},
+            {label: 'Pricing', icon: pricingIcon},
+            {label: 'FAQ', icon: faqIcon},
+            {label: 'Contact Us', icon: contactIcon},
+            {label: 'How it Works', icon: worksIcon},
+            {label: 'More', icon: moreIcon},
           ].map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -48,14 +69,11 @@ const OwnerProfile = ({ navigation }) => {
                   navigation.navigate('AboutUs');
                 } else if (item.label === 'FAQ') {
                   navigation.navigate('FAQ');
-                }
-                else if (item.label === 'Contact Us') {
+                } else if (item.label === 'Contact Us') {
                   navigation.navigate('ContactUs');
-                }
-                else if (item.label === 'Pricing') {
+                } else if (item.label === 'Pricing') {
                   navigation.navigate('Pricing');
-                }
-                else if (item.label === 'How it Works') {
+                } else if (item.label === 'How it Works') {
                   navigation.navigate('HowItWorks');
                 }
               }}>
@@ -66,7 +84,9 @@ const OwnerProfile = ({ navigation }) => {
           ))}
         </View>
 
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() => handleLogout(navigation)}>
           <Icons
             name="logout"
             size={20}

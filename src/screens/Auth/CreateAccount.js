@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -6,16 +6,21 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Alert,
 } from 'react-native';
 import Header from '../../components/Header';
+import Toast from 'react-native-toast-message';
 
-const SignUpScreen = ({ navigation }) => {
+const SignUpScreen = ({navigation}) => {
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleContinue = () => {
     if (!selectedOption) {
-      Alert.alert('Error', 'Please select an option to continue!');
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: 'Please select an option to continue!',
+        visibilityTime: 2000,
+      });
       return;
     }
 
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: 'KnulTrial-Regular',
     height: 24,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
   btn: {
     position: 'absolute',
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     height: 24,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
 });
 

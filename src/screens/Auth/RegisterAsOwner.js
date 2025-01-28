@@ -17,17 +17,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary} from 'react-native-image-picker';
 
-// import {
-//   getStorage,
-//   ref as storageRef,
-//   uploadBytes,
-//   getDownloadURL,
-// } from 'firebase/storage';
-
 import {getDatabase, ref, set} from 'firebase/database';
 import {useAuth} from '../../firebase/AuthContext';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
+
+import {useFormik} from 'formik';
+import {registerValidationSchema} from '../../utils/validationSchemas';
+
 const RegisterAsBoatOwner = ({navigation}) => {
   const scrollViewRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(0);
@@ -45,7 +42,6 @@ const RegisterAsBoatOwner = ({navigation}) => {
   const {signup} = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const role = '';
 
   const serverUrl = 'https://www.bbrbassboatrentals.com';
 
@@ -119,6 +115,58 @@ const RegisterAsBoatOwner = ({navigation}) => {
     });
   };
 
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      age: '',
+      zipCode: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      state: '',
+      country: '',
+      ssn: '',
+      federalId: '',
+      referalCode: '',
+    },
+    validationSchema: registerValidationSchema,
+    onSubmit: async values => {
+      if (!isChecked) return;
+      setLoading(true);
+
+      try {
+        const userCredential = await signup(values.email, values.password);
+        const userId = userCredential.user.uid;
+
+        const userRef = ref(db, `users/${userId}`);
+
+        console.log('Firebase Database Path:', userRef);
+
+        await set(userRef, {
+          ...values,
+          phone: phoneNumber,
+          countryCode: selectedCountry,
+          role: 'Boat Owner',
+        });
+
+        // Log the Firebase user object to inspect available links
+        console.log('Registered User:', userCredential.user);
+
+        console.log('Registration User Data:  ', userCredential);
+
+        navigation.navigate('GetStarted');
+      } catch (err) {
+        console.error(err.message);
+        setError(err.message || 'Failed to register');
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
+
   const handleInputChange = (text, inputName) => {
     setInputStates(prevState => ({
       ...prevState,
@@ -126,81 +174,59 @@ const RegisterAsBoatOwner = ({navigation}) => {
     }));
   };
 
-  const handleSubmit = async () => {
-    if (!isChecked) return;
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const userCredential = await signup(
-        inputStates.email,
-        inputStates.password,
-      );
-      const userId = userCredential.user.uid;
-
-      let profilePictureUrl = null;
-      // if (profilePicture) {
-      //   profilePictureUrl = await uploadProfilePicture();
-      // }
-
-      const userRef = ref(db, `users/${userId}`);
-      console.log('Response DB: ', userRef);
-      await set(userRef, {
-        firstName: inputStates.firstName,
-        lastName: inputStates.lastName,
-        email: inputStates.email,
-        phone: phoneNumber,
-        countryCode: selectedCountry,
-        age: inputStates.age,
-        avatar: 'Not worked yet',
-        referalCode: inputStates.referalCode || null,
-        password: inputStates.password,
-        addressLine1: inputStates.addressLine1,
-        addressLine2: inputStates.addressLine2,
-        city: inputStates.city,
-        state: inputStates.state,
-        zipCode: inputStates.zipCode,
-        socialSecurityNumber: inputStates.ssn,
-        fID: inputStates.federalId,
-        country: inputStates.country,
-        role: 'Boat Owner"',
-      });
-
-      navigation.navigate('GetStarted');
-    } catch (err) {
-      console.error(err);
-      setError(err.message || 'Failed to register');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const sections = [
     {
       id: 0,
+      fields: [
+        'firstName',
+        'lastName',
+        'email',
+        'password',
+        'referalCode',
+        'age',
+      ], // Step 1 fields
       content: (
         <>
           <View style={styles.inputRow}>
-            <TextInput
-              placeholder="First Name"
-              style={styles.inputHalf}
-              placeholderTextColor={'#979797'}
-              onChangeText={text => handleInputChange(text, 'firstName')}
-            />
-            <TextInput
-              placeholder="Last Name"
-              style={styles.inputHalf}
-              placeholderTextColor={'#979797'}
-              onChangeText={text => handleInputChange(text, 'lastName')}
-            />
+            <View style={{flex: 1}}>
+              <TextInput
+                placeholder="First Name"
+                style={styles.inputHalf}
+                placeholderTextColor={'#979797'}
+                onChangeText={formik.handleChange('firstName')}
+                onBlur={formik.handleBlur('firstName')}
+                value={formik.values.firstName}
+              />
+              {formik.touched.firstName && formik.errors.firstName && (
+                <Text style={styles.error}>{formik.errors.firstName}</Text>
+              )}
+            </View>
+
+            <View style={{flex: 1}}>
+              <TextInput
+                placeholder="Last Name"
+                style={styles.inputHalf}
+                placeholderTextColor={'#979797'}
+                onChangeText={formik.handleChange('lastName')}
+                onBlur={formik.handleBlur('lastName')}
+                value={formik.values.lastName}
+              />
+              {formik.touched.lastName && formik.errors.lastName && (
+                <Text style={styles.error}>{formik.errors.lastName}</Text>
+              )}
+            </View>
           </View>
           <TextInput
             placeholder="Email"
             style={styles.input}
             placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'email')}
+            onChangeText={formik.handleChange('email')}
+            onBlur={formik.handleBlur('email')}
+            value={formik.values.email}
           />
+          {formik.touched.email && formik.errors.email && (
+            <Text style={styles.error}>{formik.errors.email}</Text>
+          )}
 
           <View style={styles.choseFileContainer}>
             <Text style={styles.choseFileTitle}>Profile Picture</Text>
@@ -227,22 +253,43 @@ const RegisterAsBoatOwner = ({navigation}) => {
             placeholder="Password"
             style={styles.input}
             placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'password')}
-          />
-          <TextInput
-            placeholder="Referal Code"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'referalCode')}
+            onChangeText={formik.handleChange('password')}
+            onBlur={formik.handleBlur('password')}
+            value={formik.values.password}
           />
 
-          <View style={styles.inputRow}>
+          {formik.touched.password && formik.errors.password && (
+            <Text style={styles.error}>{formik.errors.password}</Text>
+          )}
+
+          <View>
             <TextInput
-              placeholder="Age"
-              style={[styles.inputHalf, {flex: 0.1}]}
+              placeholder="Referal Code"
+              style={styles.input}
               placeholderTextColor={'#979797'}
-              onChangeText={text => handleInputChange(text, 'age')}
+              onChangeText={formik.handleChange('referalCode')}
+              onBlur={formik.handleBlur('referalCode')}
+              value={formik.values.referalCode}
             />
+            {formik.touched.referalCode && formik.errors.referalCode && (
+              <Text style={styles.error}>{formik.errors.referalCode}</Text>
+            )}
+          </View>
+
+          <View style={styles.inputRow}>
+            <View>
+              <TextInput
+                placeholder="Age"
+                style={[styles.inputHalf, {flex: 0.1}]}
+                placeholderTextColor={'#979797'}
+                onChangeText={formik.handleChange('age')}
+                onBlur={formik.handleBlur('age')}
+                value={formik.values.age}
+              />
+              {formik.touched.age && formik.errors.age && (
+                <Text style={styles.error}>{formik.errors.age}</Text>
+              )}
+            </View>
 
             <View style={styles.phoneInputContainer}>
               <Dropdown
@@ -290,57 +337,125 @@ const RegisterAsBoatOwner = ({navigation}) => {
     },
     {
       id: 1,
+      fields: [
+        'addressLine1',
+        'addressLine2',
+        'city',
+        'state',
+        'zipCode',
+        'country',
+        'ssn',
+        'federalId',
+      ], // Step 2 fields
       content: (
         <>
-          <TextInput
-            placeholder="Address Line 1"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'addressLine1')}
-          />
-          <TextInput
-            placeholder="Address Line 2"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'addressLine2')}
-          />
-          <TextInput
-            placeholder="City"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'city')}
-          />
-          <TextInput
-            placeholder="State/Province"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'state')}
-          />
-          <TextInput
-            placeholder="Zip Code"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'zipCode')}
-          />
+          <View>
+            <TextInput
+              placeholder="Address Line 1"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('addressLine1')}
+              onBlur={formik.handleBlur('addressLine1')}
+              value={formik.values.addressLine1}
+            />
+            {formik.touched.addressLine1 && formik.errors.addressLine1 && (
+              <Text style={styles.error}>{formik.errors.addressLine1}</Text>
+            )}
+          </View>
+          <View>
+            <TextInput
+              placeholder="Address Line 2"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('addressLine2')}
+              onBlur={formik.handleBlur('addressLine2')}
+              value={formik.values.addressLine2}
+            />
+            {formik.touched.addressLine2 && formik.errors.addressLine2 && (
+              <Text style={styles.error}>{formik.errors.addressLine2}</Text>
+            )}
+          </View>
+          <View>
+            <TextInput
+              placeholder="City"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('city')}
+              onBlur={formik.handleBlur('city')}
+              value={formik.values.city}
+            />
+            {formik.touched.city && formik.errors.city && (
+              <Text style={styles.error}>{formik.errors.city}</Text>
+            )}
+          </View>
+          <View>
+            <TextInput
+              placeholder="State/Province"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('state')}
+              onBlur={formik.handleBlur('state')}
+              value={formik.values.state}
+            />
+            {formik.touched.state && formik.errors.state && (
+              <Text style={styles.error}>{formik.errors.state}</Text>
+            )}
+          </View>
+          <View>
+            <TextInput
+              placeholder="Zip Code"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('zipCode')}
+              onBlur={formik.handleBlur('zipCode')}
+              value={formik.values.zipCode}
+            />
+            {formik.touched.zipCode && formik.errors.zipCode && (
+              <Text style={styles.error}>{formik.errors.zipCode}</Text>
+            )}
+          </View>
 
-          <TextInput
-            placeholder="Country"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'country')}
-          />
-          <TextInput
-            placeholder="Social Security Number (XXX-XX-XXXX)"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'ssn')}
-          />
-          <TextInput
-            placeholder="Federal ID (EIN) (XX-XXXXXXX)"
-            style={styles.input}
-            placeholderTextColor={'#979797'}
-            onChangeText={text => handleInputChange(text, 'federalId')}
-          />
+          <View>
+            <TextInput
+              placeholder="Country"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('country')}
+              onBlur={formik.handleBlur('country')}
+              value={formik.values.country}
+            />
+            {formik.touched.country && formik.errors.country && (
+              <Text style={styles.error}>{formik.errors.country}</Text>
+            )}
+          </View>
+          <View>
+            <TextInput
+              placeholder="Social Security Number (XXX-XX-XXXX)"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('ssn')}
+              onBlur={formik.handleBlur('ssn')}
+              value={formik.values.ssn}
+            />
+            {formik.touched.ssn && formik.errors.ssn && (
+              <Text style={{color: 'red', fontSize: 12}}>
+                {formik.errors.ssn}
+              </Text>
+            )}
+          </View>
+          <View>
+            <TextInput
+              placeholder="Federal ID (EIN) (XX-XXXXXXX)"
+              style={styles.input}
+              placeholderTextColor={'#979797'}
+              onChangeText={formik.handleChange('federalId')}
+              onBlur={formik.handleBlur('federalId')}
+              value={formik.values.federalId}
+            />
+            {formik.touched.federalId && formik.errors.federalId && (
+              <Text style={styles.error}>{formik.errors.federalId}</Text>
+            )}
+          </View>
           <View style={styles.termsContainer}>
             <TouchableOpacity
               style={styles.iconWrapper}
@@ -375,6 +490,30 @@ const RegisterAsBoatOwner = ({navigation}) => {
       setCurrentStep(previousStep);
       scrollToStep(previousStep);
     }
+  };
+
+  const handleSubmit = async () => {
+    formik.validateForm().then(errors => {
+      if (Object.keys(errors).length === 0) {
+        formik.handleSubmit();
+      } else {
+        formik.setTouched({
+          firstName: true,
+          lastName: true,
+          email: true,
+          password: true,
+          age: true,
+          zipCode: true,
+          addressLine1: true,
+          addressLine2: true,
+          city: true,
+          state: true,
+          country: true,
+          ssn: true,
+          federalId: true,
+        });
+      }
+    });
   };
 
   return (
@@ -412,17 +551,30 @@ const RegisterAsBoatOwner = ({navigation}) => {
         )}
         {currentStep < sections.length - 1 ? (
           <TouchableOpacity
-            style={styles.btnNext}
+            style={[
+              styles.btnNext,
+              {
+                opacity: sections[currentStep].fields.some(
+                  field => formik.errors[field] && formik.touched[field],
+                )
+                  ? 0.5
+                  : 1,
+              },
+            ]}
             onPress={handleNext}
-            accessible={true}
-            accessibilityLabel="Go to next step">
+            disabled={sections[currentStep].fields.some(
+              field => formik.errors[field] && formik.touched[field],
+            )}>
             <Text style={styles.btnText}>Next</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
-            style={[styles.btnSubmit, {opacity: isChecked ? 1 : 0.5}]}
+            style={[
+              styles.btnSubmit,
+              {opacity: isChecked && !formik.isSubmitting ? 1 : 0.5},
+            ]}
             onPress={handleSubmit}
-            disabled={!isChecked || loading}>
+            disabled={!isChecked || loading || formik.isSubmitting}>
             <Text style={styles.btnText}>
               {loading ? 'Submitting...' : 'Submit'}
             </Text>
@@ -463,7 +615,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   sectionContainer: {
-    // height: SCREEN_HEIGHT * 0.8,
     justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -620,6 +771,7 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingLeft: 10,
   },
+  error: {color: 'red', fontSize: 12},
 });
 
 export default RegisterAsBoatOwner;
