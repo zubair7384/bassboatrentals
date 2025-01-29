@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -17,38 +17,100 @@ import OwnerCalendar from '../../components/OwnerCalendar';
 import OwnerBoatFeatures from '../../components/OwnerBoatFeatures';
 import mail_icon from '../../assets/icons/mail_icon.png';
 
+import {getListingByID} from '../../firebase/firebaseUtils';
+import {useRoute} from '@react-navigation/native';
+import {getUserData} from '../../utils/storage';
+
 const MyboatsDetails = ({navigation}) => {
   const [isFeatures, setIsFeatures] = useState(false);
   const [isInfo, setIsInfo] = useState(false);
   const [isBoatAvailable, setIsBoatAvailable] = useState(false);
   const [isReview, setIsReview] = useState(false);
 
+  const [listing, setListing] = useState([]);
+  const route = useRoute();
+  const {id} = route.params || {};
+
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userData = await getUserData();
+      if (userData) {
+        setUserData(userData);
+        console.log('User saved Dataaaa: ', userData);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    if (!id) {
+      console.error('Error: No Boat ID provided');
+      return;
+    }
+
+    const fetchListingDetails = async () => {
+      try {
+        const details = await getListingByID(id);
+
+        if (details) {
+          setListing(details);
+        } else {
+          console.error('No listing found for the given ID:', id);
+        }
+      } catch (error) {
+        console.error('Error fetching listing details:', error);
+      }
+    };
+
+    fetchListingDetails();
+  }, [id]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title="View Details" navigation={navigation} />
       <ScrollView style={styles.scrollviewStyle}>
-        <TouchableOpacity
-          style={styles.bookNowButton}
-          onPress={() => {
-            navigation.navigate('Booking');
-          }}>
-          <Image source={mail_icon} style={styles.mailIcon} />
-          <Text style={styles.bookNowButtonText}>Book Now</Text>
-        </TouchableOpacity>
+        {userData?.role === 'Boat Owner' ? (
+          <>
+            <TouchableOpacity
+              style={styles.availabilityButton}
+              onPress={() => navigation.navigate('Booking')}>
+              <Text style={styles.availabilityButtonText}>
+                Manage Availability
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={() => navigation.navigate('Booking')}>
+              <Text style={styles.removeButtonText}>Remove Boat</Text>
+            </TouchableOpacity>
+          </>
+        ) : userData?.role === 'Renter' ? (
+          <TouchableOpacity
+            style={styles.bookNowButton}
+            onPress={() => navigation.navigate('Booking')}>
+            <Image source={mail_icon} style={styles.mailIcon} />
+            <Text style={styles.bookNowButtonText}>Book Now</Text>
+          </TouchableOpacity>
+        ) : null}
+
         <Image
           source={boatImage}
           style={styles.bannerImage}
           resizeMode="cover"
         />
-        <Text style={styles.boatName}>Phoenix 921 Elite</Text>
-        <Text style={styles.boatCategory}>Bass Boat</Text>
+        <Text style={styles.boatName}>{listing?.listingTitle}</Text>
+        <Text style={styles.boatCategory}>{listing?.boatType}</Text>
         <Text style={styles.boatCategory}>
           96 Beach Walk Blvd #205, Conroe, TX 77304, USA
         </Text>
         <View style={styles.model}>
-          <Text style={styles.modelText}>2020 PHOENIIX 921 ELITE</Text>
+          <Text style={styles.modelText}>{listing?.model}</Text>
         </View>
-        <Text style={styles.boatCategory}>3 Guests Capacity</Text>
+        <Text
+          style={styles.boatCategory}>{`1 - ${listing?.capacity} people`}</Text>
 
         <View style={styles.collapseContainer}>
           <TouchableOpacity
@@ -63,7 +125,7 @@ const MyboatsDetails = ({navigation}) => {
           </TouchableOpacity>
           {isFeatures && (
             <View style={styles.collapseContent}>
-              <OwnerBoatFeatures />
+              <OwnerBoatFeatures listing={listing} />
             </View>
           )}
         </View>
@@ -81,7 +143,7 @@ const MyboatsDetails = ({navigation}) => {
           </TouchableOpacity>
           {isInfo && (
             <View style={styles.collapseContent}>
-              <OwnerBoatInfo />
+              <OwnerBoatInfo listing={listing} />
             </View>
           )}
         </View>
@@ -204,9 +266,47 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 10,
   },
+  availabilityButton: {
+    flexDirection: 'row',
+    backgroundColor: '#F8F8F8',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 5,
+    justifyContent: 'center',
+    gap: 10,
+  },
+  removeButton: {
+    flexDirection: 'row',
+    backgroundColor: '#F64949',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 10,
+    justifyContent: 'center',
+    gap: 10,
+  },
+  removeButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '500',
+    fontFamily: 'KnulTrial-Regular',
+    height: 24,
+    textAlignVertical: 'center',
+  },
   bookNowButtonText: {
     fontSize: 16,
     color: '#fff',
+    fontWeight: '500',
+    fontFamily: 'KnulTrial-Regular',
+    height: 24,
+    textAlignVertical: 'center',
+  },
+  availabilityButtonText: {
+    fontSize: 16,
+    color: '#111',
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     height: 24,

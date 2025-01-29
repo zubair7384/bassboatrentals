@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
-const AddBoatImageLocation = () => {
-  const [featureImage, setFeatureImage] = useState(null);
-  const [galleryImages, setGalleryImages] = useState(null);
+const GOOGLE_API_KEY = 'AIzaSyBfEcoyW9DM7QQWdV3oTjevrfyhX5n5qqg';
+import 'react-native-get-random-values';
+
+const AddBoatImageLocation = ({formik}) => {
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Boat Images and Location</Text>
-
       <Text style={styles.label}>Feature Image</Text>
       <TouchableOpacity style={styles.uploadContainer}>
         <Text style={styles.uploadText}>Upload Feature Images</Text>
@@ -16,7 +18,6 @@ const AddBoatImageLocation = () => {
           <Text style={styles.fileButtonText}>Choose File</Text>
         </View>
       </TouchableOpacity>
-
       <Text style={styles.label}>Add Gallery Images</Text>
       <TouchableOpacity style={styles.uploadContainer}>
         <Text style={styles.uploadText}>Upload Gallery Images</Text>
@@ -24,11 +25,36 @@ const AddBoatImageLocation = () => {
           <Text style={styles.fileButtonText}>Choose File</Text>
         </View>
       </TouchableOpacity>
-
       <Text style={styles.label}>Boat Location</Text>
-      <TouchableOpacity style={styles.locationInput}>
-        <Text style={styles.placeholderText}>Search Places</Text>
-      </TouchableOpacity>
+      <GooglePlacesAutocomplete
+        placeholder="Search Places"
+        minLength={2}
+        fetchDetails={true}
+        onPress={(data, details = null) => {
+          if (details) {
+            const {lat, lng} = details.geometry.location;
+            const locationData = {lat, lng};
+
+            setSelectedLocation({address: data.description, ...locationData});
+            formik.setFieldValue('Boat_Location', locationData);
+            console.log('Selected Location:', locationData);
+          }
+        }}
+        query={{
+          key: GOOGLE_API_KEY,
+          language: 'en',
+        }}
+        styles={{
+          textInputContainer: styles.locationInputContainer,
+          textInput: styles.input,
+        }}
+      />
+
+      {/* {selectedLocation && (
+        <Text style={styles.selectedLocationText}>
+          Selected: {selectedLocation.address}
+        </Text>
+      )} */}
     </View>
   );
 };
@@ -75,14 +101,21 @@ const styles = StyleSheet.create({
     color: '#777',
     fontSize: 14,
   },
-  locationInput: {
+  locationInputContainer: {
+    backgroundColor: '#191919',
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  input: {
     backgroundColor: '#191919',
     padding: 15,
     borderRadius: 10,
+    color: 'white',
   },
-  placeholderText: {
-    color: '#777',
+  selectedLocationText: {
+    color: '#fff',
     fontSize: 14,
+    marginTop: 10,
   },
 });
 

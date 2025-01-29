@@ -1,23 +1,23 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const OwnerBoatInfo = () => {
+const OwnerBoatInfo = ({listing}) => {
   return (
     <View>
       <View>
         <Text style={styles.title}>Motor Details</Text>
         <View style={styles.cardContainer}>
           <View style={styles.cardTextContainer}>
-            <Text style={styles.cardText}>Make</Text>
+            <Text style={styles.cardText}>{listing?.motorMake}</Text>
             <Text style={styles.cardText}>Mercury</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Model</Text>
-            <Text style={styles.cardText}>250 Pro XS</Text>
+            <Text style={styles.cardText}>{listing?.motorModel}</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Year</Text>
-            <Text style={styles.cardText}>2020</Text>
+            <Text style={styles.cardText}>{listing?.motorYear}</Text>
           </View>
         </View>
       </View>
@@ -26,28 +26,28 @@ const OwnerBoatInfo = () => {
         <View style={styles.cardContainer}>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Make</Text>
-            <Text style={styles.cardText}>Master</Text>
+            <Text style={styles.cardText}>{listing?.trollingMotorMake}</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Year</Text>
-            <Text style={styles.cardText}>2020</Text>
+            <Text style={styles.cardText}>{listing?.trollingMotorYear}</Text>
           </View>
         </View>
       </View>
       <View>
-        <Text style={styles.title}>Trailer Details Details</Text>
+        <Text style={styles.title}>Trailer Details</Text>
         <View style={styles.cardContainer}>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Make</Text>
-            <Text style={styles.cardText}>MINN KOTA</Text>
+            <Text style={styles.cardText}>{listing?.trailerMake}</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Model</Text>
-            <Text style={styles.cardText}>ULTREX</Text>
+            <Text style={styles.cardText}>{listing?.trollingMotorModel}</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Year</Text>
-            <Text style={styles.cardText}>2020</Text>
+            <Text style={styles.cardText}>{listing?.trollingMotorYear}</Text>
           </View>
         </View>
       </View>
@@ -56,11 +56,13 @@ const OwnerBoatInfo = () => {
         <View style={styles.cardContainer}>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Number</Text>
-            <Text style={styles.cardText}>No</Text>
+            <Text style={styles.cardText}>{listing?.shallowWaterAnchors}</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Brand & Model</Text>
-            <Text style={styles.cardText}>Power Pole Blade 8FT</Text>
+            <Text style={styles.cardText}>
+              {listing?.shallowWaterAnchorBrandModel}
+            </Text>
           </View>
         </View>
       </View>
@@ -69,15 +71,15 @@ const OwnerBoatInfo = () => {
         <View style={styles.cardContainer}>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Make</Text>
-            <Text style={styles.cardText}>Lowrance</Text>
+            <Text style={styles.cardText}>{listing?.ffsMake}</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Model</Text>
-            <Text style={styles.cardText}>Active Target 2</Text>
+            <Text style={styles.cardText}>{listing?.ffsModel}</Text>
           </View>
           <View style={styles.cardTextContainer}>
             <Text style={styles.cardText}>Year</Text>
-            <Text style={styles.cardText}>2022</Text>
+            <Text style={styles.cardText}>{listing?.ffsYear}</Text>
           </View>
         </View>
       </View>
@@ -86,19 +88,31 @@ const OwnerBoatInfo = () => {
         <View style={styles.cardGraphContainer}>
           <View style={styles.cardTextGraph}>
             <Text style={styles.cardText}>Graph 1 Make - Model - Year</Text>
-            <Text style={styles.cardText}>Lowrance - HDS Live 12 - 2020</Text>
+            <Text
+              style={
+                styles.cardText
+              }>{`${listing?.graph1Make} - ${listing?.graph1Model} - ${listing?.graph1Year}`}</Text>
           </View>
           <View style={styles.cardTextGraph}>
             <Text style={styles.cardText}>Graph 2 Make - Model - Year</Text>
-            <Text style={styles.cardText}>Lowrance - HDS Live 12 - 2020</Text>
+            <Text
+              style={
+                styles.cardText
+              }>{`${listing?.graph2Make} - ${listing?.graph2Model} - ${listing?.graph2Year}`}</Text>
           </View>
           <View style={styles.cardTextGraph}>
             <Text style={styles.cardText}>Graph 3 Make - Model - Year</Text>
-            <Text style={styles.cardText}>Lowrance - HDS Live 12 - 2020</Text>
+            <Text
+              style={
+                styles.cardText
+              }>{`${listing?.graph3Make} - ${listing?.graph3Model} - ${listing?.graph3Year}`}</Text>
           </View>
           <View style={styles.cardTextGraph}>
             <Text style={styles.cardText}>Graph 4 Make - Model - Year</Text>
-            <Text style={styles.cardText}>Lowrance - HDS Live 12 - 2020</Text>
+            <Text
+              style={
+                styles.cardText
+              }>{`${listing?.graph4Make} - ${listing?.graph4Model} - ${listing?.graph4Year}`}</Text>
           </View>
         </View>
       </View>

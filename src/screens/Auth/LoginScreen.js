@@ -11,13 +11,14 @@ import {
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Feather';
 import {auth} from '../../firebase/firebaseConfig';
+import {getUserByID} from '../../firebase/firebaseUtils';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useFormik} from 'formik';
 import Toast from 'react-native-toast-message';
 import {loginValidationSchema} from '../../utils/validationSchemas';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {saveToken} from '../../utils/storage';
+import {saveToken, saveUserData} from '../../utils/storage';
 
 const LoginScreen = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -56,7 +57,6 @@ const LoginScreen = ({navigation}) => {
     }
   };
 
-  // Formik setup
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -71,32 +71,27 @@ const LoginScreen = ({navigation}) => {
           values.password,
         );
 
-        console.log('Firebase Login Response:', userCredential);
+        const user = userCredential.user;
+        const token = await user.getIdToken();
+        const userDetails = await getUserByID(user?.uid);
 
-        const token = await userCredential.user.getIdToken();
+        const userData = {
+          uid: user?.uid,
+          role: userDetails?.role,
+          email: user.email,
+          userType: values.email.includes('renter') ? 'renter' : 'owner',
+          token: token,
+        };
 
-        // console.log('User Token:', token);
+        // console.log(userData, 'userData');
 
-        // Save token or credentials as per the existing logic
+        await saveUserData(userData);
         await saveToken(token);
-        saveCredentials(values.email, values.password);
 
-        Toast.show({
-          type: 'success',
-          text1: 'Welcome!',
-          text2: `Welcome back, ${userCredential.user.email}!`,
-          visibilityTime: 3000,
-        });
-
-        // Navigate to the home screen
+        console.log('User data stored:', userData);
         navigation.navigate('OwnerHome');
       } catch (error) {
-        Toast.show({
-          type: 'error',
-          text1: 'Login Failed',
-          text2: error.message,
-          visibilityTime: 2000,
-        });
+        console.error('Login Error:', error);
       }
     },
   });

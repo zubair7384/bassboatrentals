@@ -44,10 +44,10 @@ export const addingBoatValidationSchema = Yup.object({
     .required('Max Passengers Capacity is required')
     .min(1, 'Must be at least 1 passenger'),
   Boat_Type: Yup.string().required('Boat Type is required'),
-  Boat_Location: Yup.string().required('Boat Location Field is required'),
-  Motor_Type: Yup.string().required('Motor Type Field is required'),
-  Horse_Power: Yup.string().required('Horse Power Field is required'),
-  Boat_Rate: Yup.string().required('Rate Field is required'),
+  Boat_Location: '',
+  Motor_Type: '',
+  Horse_Power: '',
+  Boat_Rate: '',
 
   Boat_Make: Yup.string().required('Make Field is required'),
   Boat_Model: Yup.string().required('Model Field is requied'),

@@ -1,17 +1,32 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {getDatabase, ref, remove} from 'firebase/database';
 
 const BoatCard = ({
   title,
   subtitle,
   onPressViewDetail,
-  onPressDelete,
   cardColor,
   customIcon,
   height,
   width,
   rate,
+  listingId,
+  onDelete,
 }) => {
+  const handleDeleteListing = useCallback(async () => {
+    try {
+      const database = getDatabase();
+      const listingRef = ref(database, `listings/${listingId}`);
+      await remove(listingRef);
+      console.log(listingRef, 'listingRef');
+
+      onDelete(listingId);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [listingId, onDelete]);
+
   return (
     <View style={styles.container}>
       <View style={[styles.card, {backgroundColor: cardColor}]}>
@@ -26,7 +41,9 @@ const BoatCard = ({
           ))}
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+          {title}
+        </Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
         <Text style={styles.rate}>{rate}</Text>
       </View>
@@ -34,7 +51,9 @@ const BoatCard = ({
         <TouchableOpacity style={styles.detailBtn} onPress={onPressViewDetail}>
           <Text style={styles.detailBtnText}>View Details</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.removeBtn} onPress={onPressDelete}>
+        <TouchableOpacity
+          style={styles.removeBtn}
+          onPress={handleDeleteListing}>
           <Text style={styles.removeBtnText}>Remove Boat</Text>
         </TouchableOpacity>
       </View>
@@ -48,8 +67,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: '20',
-    paddingVertical: 10,
+    paddingHorizontal: '10',
   },
   card: {
     height: 86,
@@ -59,11 +77,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '700',
     fontFamily: 'KnulTrial-Regular',
     lineHeight: 30,
     color: '#ffffff',
+    marginRight: 10,
+    width: 150,
   },
   subtitle: {
     fontSize: 14,
@@ -90,19 +110,21 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     marginLeft: 'auto',
+    display: 'flex',
+    gap: 20,
   },
 
   detailBtnText: {
     color: '#FFFFFF',
     fontFamily: 'KnulTrial-Regular',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '500',
     height: 24,
   },
   removeBtnText: {
     color: '#CE5050',
     fontFamily: 'KnulTrial-Regular',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '500',
     height: 24,
   },

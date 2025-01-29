@@ -2,79 +2,31 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const OwnerBoatFeatures = () => {
+const OwnerBoatFeatures = ({listing}) => {
   return (
     <View>
       <Text style={styles.title}>Boat Details</Text>
       <View style={styles.cardContainer}>
         <View style={styles.cardTextContainer}>
           <Text style={styles.cardText}>Make</Text>
-          <Text style={styles.cardText}>Phoenix</Text>
+          <Text style={styles.cardText}>{listing?.make}</Text>
         </View>
         <View style={styles.cardTextContainer}>
           <Text style={styles.cardText}>Model</Text>
-          <Text style={styles.cardText}>921 Elite</Text>
+          <Text style={styles.cardText}>{listing?.model}</Text>
         </View>
         <View style={styles.cardTextContainer}>
           <Text style={styles.cardText}>Year</Text>
-          <Text style={styles.cardText}>2020</Text>
+          <Text style={styles.cardText}>{listing?.year}</Text>
         </View>
       </View>
       <View style={styles.listContainer}>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Standard AGM Cranking Battery</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>
-            Standard AGM Trolling Motor Batteries
-          </Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Pedestal Butt Seat Rear</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Life jackets/required safety gear</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Live Wells</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Live well Oxygenators</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Landing Net</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Deck Lights</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Working Audible Horn</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Whistle</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>PFD</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Fire Extinguisher</Text>
-        </View>
-        <View style={styles.listTextContainer}>
-          <Icon name="dot-single" size={24} color="white" />
-          <Text style={styles.listText}>Ice Storage Cooler</Text>
-        </View>
+        {listing?.features?.map((list, index) => (
+          <View key={index} style={styles.listTextContainer}>
+            <Icon name="dot-single" size={24} color="white" />
+            <Text style={styles.listText}>{list}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
