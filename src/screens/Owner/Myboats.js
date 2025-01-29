@@ -6,61 +6,71 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import BoatCard from '../../components/BoatCard';
 import boat_img from '../../assets/images/bbr_rect.png';
 import plus_icon from '../../assets/icons/plus.png';
-import {ScrollView} from 'react-native';
+import {getListingByUserID} from '../../firebase/firebaseUtils';
+import {useAuth} from '../../firebase/AuthContext';
 
 const Myboats = ({navigation}) => {
+  const [listings, setListings] = React.useState([]);
+  const auth = useAuth();
+
+  React.useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const Boatlistings = await getListingByUserID(auth.currentUser.uid);
+        setListings(Boatlistings);
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+      }
+    };
+    fetchListings();
+  }, [auth?.currentUser?.uid]);
+
+  const handleDeleteListing = listingId => {
+    setListings(prevListings =>
+      prevListings.filter(boat => boat.id !== listingId),
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>My Boats</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.bookingList}>
+
+      <FlatList
+        data={listings}
+        keyExtractor={boat => boat?.id?.toString()}
+        renderItem={({item}) => (
           <BoatCard
-            title="Bass boat"
-            subtitle="1 - 3 People"
+            title={item?.listingTitle}
+            subtitle={`1 - ${item?.capacity} people`}
             cardColor="#ADCB4D"
             customIcon={boat_img}
-            width="86"
-            height="86"
-            rate="100 / Day"
-            onPressViewDetail={() => navigation.navigate('MyboatsDetails')}
-            onPressDelete={() => console.log('Pressed')}
+            width={86}
+            height={86}
+            rate={`${item?.pricing?.hourlyRate} / Hour`}
+            onPressViewDetail={() =>
+              navigation.navigate('MyboatsDetails', {id: item?.id})
+            }
+            listingId={item?.id}
+            onDelete={handleDeleteListing}
           />
-          <BoatCard
-            title="Bass boat"
-            subtitle="1 - 3 People"
-            cardColor="#ADCB4D"
-            customIcon={boat_img}
-            width="86"
-            height="86"
-            rate="100 / Day"
-            onPressViewDetail={() => navigation.navigate('MyboatsDetails')}
-            onPressDelete={() => console.log('Pressed')}
-          />
-          <BoatCard
-            title="Bass boat"
-            subtitle="1 - 3 People"
-            cardColor="#ADCB4D"
-            customIcon={boat_img}
-            width="86"
-            height="86"
-            rate="100 / Day"
-            onPressViewDetail={() => navigation.navigate('MyboatsDetails')}
-            onPressDelete={() => console.log('Pressed')}
-          />
+        )}
+        ListFooterComponent={
           <TouchableOpacity
             style={styles.addBoat}
             onPress={() => navigation.navigate('AddBoat')}>
             <Image source={plus_icon} />
             <Text style={styles.addBoatText}>Add New Boats</Text>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
+        }
+        showsVerticalScrollIndicator={false}
+      />
     </SafeAreaView>
   );
 };
@@ -85,14 +95,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
     textAlign: 'center',
-    textAlignVertical: 'center',
     lineHeight: 48,
-  },
-
-  bookingList: {
-    marginTop: 20,
-    gap: 10,
-    paddingHorizontal: 10,
   },
   addBoat: {
     flexDirection: 'row',
@@ -111,7 +114,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     fontFamily: 'KnulTrial-Regular',
-    height: '24',
     textAlignVertical: 'center',
     paddingHorizontal: 10,
   },
