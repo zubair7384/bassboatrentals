@@ -5,7 +5,7 @@ const InputContainer = ({label, value, onChange, onBlur}) => {
   const [internalValue, setInternalValue] = useState(value || ''); // Local state
 
   const formatCurrency = text => {
-    let cleaned = text.replace(/[^0-9.]/g, ''); // Remove non-numeric except '.'
+    let cleaned = text.replace(/[^0-9.]/g, '');
 
     // Allow the first decimal but prevent multiple
     const parts = cleaned.split('.');
@@ -38,8 +38,8 @@ const InputContainer = ({label, value, onChange, onBlur}) => {
 
   const handleTextChange = text => {
     const formatted = formatCurrency(text);
-    setInternalValue(formatted); // Update internal state
-    onChange(formatted); // Call parent handler
+    setInternalValue(formatted);
+    onChange(formatted);
   };
 
   return (
