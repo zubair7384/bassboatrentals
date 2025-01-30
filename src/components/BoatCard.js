@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: '10',
+    marginVertical: 5,
   },
   card: {
     height: 86,

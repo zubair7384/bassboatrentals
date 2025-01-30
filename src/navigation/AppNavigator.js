@@ -30,6 +30,8 @@ import PricingScreen from '../screens/Owner/Pricing';
 import HowItWorksScreen from '../screens/Owner/HowItWorks';
 import SettingScreen from '../screens/Owner/Setting';
 import EditPayoutMethodScreen from '../screens/Owner/EditPayoutMethod';
+import EditMyboatScreen from '../screens/Owner/EditMyboat';
+import BoatManageAvailabilityScreen from '../screens/Owner/BoatManageAvailability';
 
 const Stack = createStackNavigator();
 
@@ -180,6 +182,16 @@ const AppNavigator = () => {
         <Stack.Screen
           name="EditPayoutMethod"
           component={EditPayoutMethodScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EditMyboat"
+          component={EditMyboatScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BoatManageAvailability"
+          component={BoatManageAvailabilityScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

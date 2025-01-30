@@ -30,6 +30,8 @@ const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 import {getDatabase, ref, push, set} from 'firebase/database';
 import {useAuth} from '../../../firebase/AuthContext';
 
+import {getUserData} from '../../../utils/storage';
+
 const AddBoat = ({navigation}) => {
   const scrollViewRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(0);
@@ -37,6 +39,19 @@ const AddBoat = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const auth = useAuth();
+  const [userData, setUserData] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      const userData = await getUserData();
+      if (userData) {
+        setUserData(userData);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  // console.log('User ID; ', userData?.uid);
 
   useEffect(() => {
     const progressPercentage = (currentStep + 1) / sections?.length;
@@ -123,7 +138,7 @@ const AddBoat = ({navigation}) => {
         const boatData = {
           listingId: listingsRef.key,
           boatStatus: 'Active',
-          ownerId: auth?.currentUser?.uid,
+          ownerId: auth?.currentUser?.uid || userData?.uid,
           listingTitle: values.Listing_Title,
           shortName: values.Short_Name,
           description: values.Boat_Description,

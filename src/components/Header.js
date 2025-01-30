@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { HEADER_HEIGHT } from '../utils/dimensions';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {HEADER_HEIGHT} from '../utils/dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
-import IconFeather from 'react-native-vector-icons/Feather';
+import IconFeather from 'react-native-vector-icons/FontAwesome';
 
-const Header = ({ title, navigation, editBtn, onPress }) => {
+const Header = ({title, navigation, editBtn, onPress}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -12,7 +12,6 @@ const Header = ({ title, navigation, editBtn, onPress }) => {
         onPress={() => navigation?.goBack && navigation.goBack()}>
         <Icon name="arrow-back" size={24} color="#FFFFFF" />
       </TouchableOpacity>
-
       <Text style={styles.title}>{title}</Text>
 
       <TouchableOpacity style={styles.editButton} onPress={onPress}>
@@ -38,13 +37,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'KnulTrial-Regular',
     height: 24,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
   backButton: {
     position: 'absolute',
     left: 10,
     padding: 0,
-    // backgroundColor: 'orange',
   },
   editButton: {
     position: 'absolute',

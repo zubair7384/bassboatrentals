@@ -14,21 +14,38 @@ import plus_icon from '../../assets/icons/plus.png';
 import {getListingByUserID} from '../../firebase/firebaseUtils';
 import {useAuth} from '../../firebase/AuthContext';
 
+import {getUserData} from '../../utils/storage';
+
 const Myboats = ({navigation}) => {
   const [listings, setListings] = React.useState([]);
   const auth = useAuth();
+  const [userData, setUserData] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      const userData = await getUserData();
+      if (userData) {
+        setUserData(userData);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  // console.log('User ID; ', userData?.uid);
 
   React.useEffect(() => {
     const fetchListings = async () => {
       try {
-        const Boatlistings = await getListingByUserID(auth.currentUser.uid);
+        const Boatlistings = await getListingByUserID(
+          auth?.currentUser?.uid || userData?.uid,
+        );
         setListings(Boatlistings);
       } catch (error) {
         console.error('Error fetching listings:', error);
       }
     };
     fetchListings();
-  }, [auth?.currentUser?.uid]);
+  }, [auth?.currentUser?.uid, userData?.uid]);
 
   const handleDeleteListing = listingId => {
     setListings(prevListings =>
@@ -55,7 +72,10 @@ const Myboats = ({navigation}) => {
             height={86}
             rate={`${item?.pricing?.hourlyRate} / Hour`}
             onPressViewDetail={() =>
-              navigation.navigate('MyboatsDetails', {id: item?.id})
+              navigation.navigate('MyboatsDetails', {
+                id: item?.id,
+                onDelete: {handleDeleteListing},
+              })
             }
             listingId={item?.id}
             onDelete={handleDeleteListing}

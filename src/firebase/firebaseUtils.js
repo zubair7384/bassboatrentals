@@ -77,8 +77,6 @@ export async function getListingByID(id) {
 export async function getUserByID(uid) {
   try {
     return new Promise(async (resolve, reject) => {
-      // Assuming `user` is a valid variable, make sure to check if the user is signed in
-      // and handle the case where `user` is not defined
       const database = getDatabase();
       const usersRef = ref(database, `users/${uid}`);
       try {
@@ -97,6 +95,37 @@ export async function getUserByID(uid) {
     });
   } catch (error) {
     console.error('Error retrieving current user details:', error);
+    throw error;
+  }
+}
+
+export async function getListingLockDatesByID(id) {
+  try {
+    return new Promise(async (resolve, reject) => {
+      const database = getDatabase();
+      const listingsRef = ref(database, `listings/${id}/lockDates`);
+      console.log('listing res lockDates', listingsRef);
+      try {
+        const snapshot = await get(listingsRef);
+        if (snapshot.exists()) {
+          const listingsObject = snapshot.val();
+          if (listingsObject) {
+            resolve(listingsObject);
+          } else {
+            console.log('No Lock Dates');
+            resolve(null);
+          }
+        } else {
+          console.log('No Lock Dates');
+          resolve(null);
+        }
+      } catch (error) {
+        console.error('Error retrieving No Lock Dates details:', error);
+        reject(error);
+      }
+    });
+  } catch (error) {
+    console.error('Error retrieving No Lock Dates details:', error);
     throw error;
   }
 }
