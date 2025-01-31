@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -16,42 +16,60 @@ import {useAuth} from '../../firebase/AuthContext';
 
 import {getUserData} from '../../utils/storage';
 
-const Myboats = ({navigation}) => {
-  const [listings, setListings] = React.useState([]);
+const Myboats = ({navigation, route}) => {
+  const [listings, setListings] = useState([]);
   const auth = useAuth();
-  const [userData, setUserData] = React.useState(null);
+  const [userData, setUserData] = useState(null);
 
-  React.useEffect(() => {
+  // Fetch User Data Once
+  useEffect(() => {
     const fetchUserData = async () => {
-      const userData = await getUserData();
-      if (userData) {
-        setUserData(userData);
+      const data = await getUserData();
+      if (data) {
+        setUserData(data);
       }
     };
     fetchUserData();
   }, []);
 
-  // console.log('User ID; ', userData?.uid);
+  const fetchListings = React.useCallback(async () => {
+    if (!auth?.currentUser?.uid && !userData?.uid) return;
 
-  React.useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const Boatlistings = await getListingByUserID(
-          auth?.currentUser?.uid || userData?.uid,
-        );
-        setListings(Boatlistings);
-      } catch (error) {
-        console.error('Error fetching listings:', error);
-      }
-    };
-    fetchListings();
+    try {
+      const Boatlistings = await getListingByUserID(
+        auth?.currentUser?.uid || userData?.uid,
+      );
+      setListings(Boatlistings);
+
+      // console.log('My Boats Screen Data: ', Boatlistings);
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+    }
   }, [auth?.currentUser?.uid, userData?.uid]);
 
-  const handleDeleteListing = listingId => {
-    setListings(prevListings =>
-      prevListings.filter(boat => boat.id !== listingId),
-    );
-  };
+  useEffect(() => {
+    if (userData) {
+      fetchListings();
+    }
+  }, [fetchListings, userData]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      const {deletedId} = route.params || {};
+
+      if (deletedId) {
+        setListings(prevListings =>
+          prevListings.filter(boat => boat.id !== deletedId),
+        );
+
+        navigation.setParams({deletedId: null});
+      } else {
+        await fetchListings();
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, route.params, fetchListings]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,15 +88,11 @@ const Myboats = ({navigation}) => {
             customIcon={boat_img}
             width={86}
             height={86}
-            rate={`${item?.pricing?.hourlyRate} / Hour`}
+            rate={`${item?.pricing} / Hour`}
             onPressViewDetail={() =>
-              navigation.navigate('MyboatsDetails', {
-                id: item?.id,
-                onDelete: {handleDeleteListing},
-              })
+              navigation.navigate('MyboatsDetails', {id: item?.id})
             }
             listingId={item?.id}
-            onDelete={handleDeleteListing}
           />
         )}
         ListFooterComponent={

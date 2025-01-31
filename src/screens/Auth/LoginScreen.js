@@ -22,7 +22,7 @@ import {saveToken, saveUserData} from '../../utils/storage';
 
 const LoginScreen = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [rememberMe, setRememberMe] = useState('false');
+  const [rememberMe, setRememberMe] = useState(false);
 
   useEffect(() => {
     const loadSavedCredentials = async () => {
@@ -82,8 +82,6 @@ const LoginScreen = ({navigation}) => {
           userType: values.email.includes('renter') ? 'renter' : 'owner',
           token: token,
         };
-
-        // console.log(userData, 'userData');
 
         await saveUserData(userData);
         await saveToken(token);

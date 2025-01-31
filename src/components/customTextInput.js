@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#191919',
     paddingHorizontal: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     height: 56,
     justifyContent: 'center',
   },
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     marginTop: 5,
-    fontWeight: '500',
+    // fontWeight: '500',
     fontFamily: 'knultrial-regular',
   },
 });

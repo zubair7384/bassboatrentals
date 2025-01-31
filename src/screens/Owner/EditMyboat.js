@@ -15,6 +15,9 @@ import {useRoute} from '@react-navigation/native';
 import CustomTextInput from '../../components/customTextInput';
 import boatImage from '../../assets/images/bbr_rect.png';
 import {getDatabase, ref, update} from 'firebase/database';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+
+const GOOGLE_API_KEY = 'AIzaSyBfEcoyW9DM7QQWdV3oTjevrfyhX5n5qqg';
 
 const defaultFeatures = [
   'Lithium Cranking Battery',
@@ -37,11 +40,12 @@ const defaultFeatures = [
 ];
 const EditMyBoat = ({navigation}) => {
   const route = useRoute();
-  const {id} = route.params || {};
+  const {id, storageAddress} = route.params || {};
 
   const [features, setFeatures] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [currentFeature, setCurrentFeature] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   const [boatDetails, setBoatDetails] = useState({
     listingTitle: '',
@@ -59,7 +63,9 @@ const EditMyBoat = ({navigation}) => {
     const fetchListingDetails = async () => {
       try {
         const details = await getListingByID(id);
-        // console.log('Details: ', details);
+
+        // console.log(JSON.stringify(details, null, 2));
+
         if (details) {
           const apiFeatures = details.features || [];
 
@@ -151,7 +157,7 @@ const EditMyBoat = ({navigation}) => {
         const listingsRef = ref(getDatabase(), `listings/${id}`);
         await update(listingsRef, updatedBoatDetails);
         console.log('Boat updated successfully:', updatedBoatDetails);
-        navigation.goBack();
+        navigation.navigate('OwnerHome');
       }
     } catch (error) {
       console.error('Error updating listing:', error);
@@ -208,11 +214,37 @@ const EditMyBoat = ({navigation}) => {
           />
         </View>
 
-        <View style={styles.formGroup}>
-          <CustomTextInput
-            label="Location"
-            // value={boatDetails.boatType}
-            // onChange={text => setBoatDetails({...boatDetails, boatType: text})}
+        <View style={styles.locationInputContainer}>
+          <Text style={styles.label}>Location</Text>
+          <GooglePlacesAutocomplete
+            placeholder={storageAddress}
+            minLength={2}
+            fetchDetails={true}
+            onPress={(data, details = null) => {
+              if (details) {
+                const {lat, lng} = details.geometry.location;
+                const locationData = {lat, lng};
+
+                setSelectedLocation(locationData);
+
+                setBoatDetails(prevDetails => ({
+                  ...prevDetails,
+                  storageAddress: locationData,
+                }));
+
+                console.log('Updated Storage Address:', locationData);
+              }
+            }}
+            query={{
+              key: GOOGLE_API_KEY,
+              language: 'en',
+            }}
+            styles={{
+              textInput: styles.input,
+            }}
+            textInputProps={{
+              placeholderTextColor: '#fff',
+            }}
           />
         </View>
 
@@ -491,6 +523,32 @@ const EditMyBoat = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  label: {
+    color: '#777',
+    fontSize: 10,
+    fontWeight: '500',
+    fontFamily: 'knultrial-regular',
+    marginHorizontal: 10,
+    marginTop: 10,
+  },
+  locationInputContainer: {
+    backgroundColor: '#191919',
+    borderRadius: 8,
+    marginBottom: 10,
+    // height: 56,
+  },
+  input: {
+    backgroundColor: '#191919',
+    color: 'white',
+    height: 25,
+    fontSize: 16,
+    fontFamily: 'knultrial-regular',
+  },
+  selectedLocationText: {
+    color: '#fff',
+    fontSize: 14,
+    marginTop: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#000',

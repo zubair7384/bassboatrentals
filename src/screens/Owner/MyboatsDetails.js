@@ -34,16 +34,16 @@ const MyboatsDetails = ({navigation, onDelete}) => {
 
   const [listing, setListing] = useState([]);
   const route = useRoute();
-  const {id} = route.params || {};
+  const id = route.params?.id || '';
 
   const [userData, setUserData] = useState(null);
+  const [storageAddress, setStorageAddress] = useState('Location not found');
 
   useEffect(() => {
     const fetchUserData = async () => {
       const userData = await getUserData();
       if (userData) {
         setUserData(userData);
-        // console.log('User saved Dataaaa: ', userData);
       }
     };
     fetchUserData();
@@ -58,11 +58,23 @@ const MyboatsDetails = ({navigation, onDelete}) => {
     const fetchListingDetails = async () => {
       try {
         const details = await getListingByID(id);
+        if (!details) {
+          console.error(`No listing found for the given ID: ${id}`);
+          return;
+        }
+        setListing(details);
 
-        if (details) {
-          setListing(details);
+        if (details.storageAddress?.lat && details.storageAddress?.lng) {
+          const locationName = await getLocationName(
+            details.storageAddress.lat,
+            details.storageAddress.lng,
+          );
+          // setStorageAddress(locationName);
         } else {
-          console.error('No listing found for the given ID:', id);
+          console.error(
+            'Invalid or missing coordinates:',
+            details.storageAddress,
+          );
         }
       } catch (error) {
         console.error('Error fetching listing details:', error);
@@ -72,18 +84,36 @@ const MyboatsDetails = ({navigation, onDelete}) => {
     fetchListingDetails();
   }, [id]);
 
+  const getLocationName = async (lat, lng) => {
+    if (!lat || !lng) return 'Location not found';
+
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBfEcoyW9DM7QQWdV3oTjevrfyhX5n5qqg`,
+      );
+      const data = await response.json();
+
+      setStorageAddress(data?.results[0].formatted_address);
+
+      return data?.results[0].formatted_address || 'Location not found';
+    } catch (error) {
+      console.error('Error fetching location name:', error);
+      return 'Error fetching address';
+    }
+  };
+
   const handleDeleteListing = useCallback(async () => {
     try {
       const database = getDatabase();
       const listingRef = ref(database, `listings/${id}`);
       await remove(listingRef);
-      console.log(listingRef, 'listingRef');
 
-      onDelete(id);
+      navigation.navigate('OwnerHome', {deletedId: id});
+      setModalVisible(false);
     } catch (error) {
       console.log(error);
     }
-  }, [id, onDelete]);
+  }, [id, navigation]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,8 +121,9 @@ const MyboatsDetails = ({navigation, onDelete}) => {
         title="View Details"
         navigation={navigation}
         editBtn={'edit'}
-        onPress={() => navigation.navigate('EditMyboat', {id})}
+        onPress={() => navigation.navigate('EditMyboat', {id, storageAddress})}
       />
+      {console.log('storageAddress', storageAddress)}
       <ScrollView style={styles.scrollviewStyle}>
         {userData?.role === 'Boat Owner' ? (
           <>
@@ -108,8 +139,6 @@ const MyboatsDetails = ({navigation, onDelete}) => {
 
             <TouchableOpacity
               style={styles.removeButton}
-              // onPress={handleDeleteListing}>
-
               onPress={() => setModalVisible(true)}>
               <Text style={styles.removeButtonText}>Remove Boat</Text>
             </TouchableOpacity>
@@ -130,9 +159,7 @@ const MyboatsDetails = ({navigation, onDelete}) => {
         />
         <Text style={styles.boatName}>{listing?.listingTitle}</Text>
         <Text style={styles.boatCategory}>{listing?.boatType}</Text>
-        <Text style={styles.boatCategory}>
-          96 Beach Walk Blvd #205, Conroe, TX 77304, USA
-        </Text>
+        <Text style={styles.boatCategory}>{storageAddress}</Text>
         <View style={styles.model}>
           <Text style={styles.modelText}>{listing?.model}</Text>
         </View>
@@ -238,7 +265,6 @@ const MyboatsDetails = ({navigation, onDelete}) => {
                   style={styles.removeBtn}
                   onPress={() => {
                     handleDeleteListing();
-                    navigation.navigate('Myboats');
                   }}>
                   <Text style={styles.removeBtnText}>Yes, remove it</Text>
                 </TouchableOpacity>
