@@ -51,11 +51,11 @@ const BoatCard = ({
         <TouchableOpacity style={styles.detailBtn} onPress={onPressViewDetail}>
           <Text style={styles.detailBtnText}>View Details</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.removeBtn}
           onPress={handleDeleteListing}>
           <Text style={styles.removeBtnText}>Remove Boat</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
